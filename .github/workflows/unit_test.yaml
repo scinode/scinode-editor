@@ -35,31 +35,43 @@ jobs:
         run: |
           mkdir -p $BLENDER_PATH/scripts/addons_contrib
           cp -r scinode_editor $BLENDER_PATH/scripts/addons_contrib/
-      # - name: Enable blender addons
-      #   # Enable the blender blender addon and save user pref
-      #   run: |
-      #     blender -b --python-exit-code 1 --python-expr  "import bpy; import addon_utils; addon_utils.enable('batoms', default_set=True); bpy.ops.wm.save_userpref(); print('success')"
-      #     blender -b --python-exit-code 1 --python-expr  "import bpy; import addon_utils; addon_utils.enable('Scinode Editor', default_set=True); bpy.ops.wm.save_userpref(); print('success')"
-      # - name: Test blender path
-      #   # Test the sys.path contains the `addons_contrib` path
-      #   run: |
-      #     blender -b --python-exit-code 1 --python-expr "import sys; assert(any(['scripts/addons_contrib' in p for p in sys.path]))"
-      # - name: Test import batoms
-      #   run: |
-      #     blender -b --python-exit-code 1 --python-expr  "from batoms import Batoms; b = Batoms('O', ['O'], [[0, 0, 0]])"
-      # - name: Test import scinode_editor
-      #   run: |
-      #     blender -b --python-exit-code 1 --python-expr  "from scinode_editor.node.base_node import BnodesTreeNode; n = BnodesTreeNode()"
-      # - name: Install test dependencies
-      #   run: |
-      #     $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender
-      # - name: Lint with flake8
-      #   run: |
-      #     # stop the build if there are Python syntax errors or undefined names
-      #     flake8 . --exclude=bnodes/node/,--exclude=bnodes/node_socket/,--exclude=bnodes/gui/,bnodes/ops/,bnodes/__init__.py --count --select=E9,F63,F7,F82 --show-source --statistics
-      #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-      #     flake8 . --exclude=bnodes/node/,--exclude=bnodes/node_socket/,--exclude=bnodes/gui/,bnodes/ops/,bnodes/__init__.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-      # - name: Run blender unittests
-      #   run: |
-      #     cd tests
-      #     pytest -svv
+      - name: Enable blender addons
+        # Enable the blender blender addon and save user pref
+        run: |
+          blender -b --python-exit-code 1 --python-expr  "import bpy; import addon_utils; addon_utils.enable('batoms', default_set=True); bpy.ops.wm.save_userpref(); print('success')"
+          blender -b --python-exit-code 1 --python-expr  "import bpy; import addon_utils; addon_utils.enable('scinode_editor', default_set=True); bpy.ops.wm.save_userpref(); print('success')"
+      - name: Test blender path
+        # Test the sys.path contains the `addons_contrib` path
+        run: |
+          blender -b --python-exit-code 1 --python-expr "import sys; assert(any(['scripts/addons_contrib' in p for p in sys.path]))"
+      - name: Test import batoms
+        run: |
+          blender -b --python-exit-code 1 --python-expr  "from batoms import Batoms; b = Batoms('O', ['O'], [[0, 0, 0]])"
+      - name: Test import scinode_editor
+        run: |
+          blender -b --python-exit-code 1 --python-expr  "from scinode_editor.nodes.base_node import ScinodeTreeNode; n = ScinodeTreeNode()"
+      - name: Install test dependencies
+        run: |
+          $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --exclude=scinode_editor/nodes/,scinode_editor/sockets/,scinode_editor/gui/,scinode_editor/ops/,scinode_editor/__init__.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --exclude=scinode_editor/nodes/,scinode_editor/sockets/,scinode_editor/gui/,scinode_editor/ops/,scinode_editor/__init__.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: '5.0'
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
+      - name: Start daemon and setup database
+        run: |
+          scinode config setup --file tests/datas/config.json
+          scinode daemon add --file tests/datas/daemon_localhost.json
+          scinode daemon start localhost
+          scinode daemon list
+      - name: Run blender unittests
+        run: |
+          cd tests
+          pytest -svv
