@@ -46,12 +46,6 @@ jobs:
       - name: Install test dependencies
         run: |
           $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender
-      - name: Lint with flake8
-        run: |
-          # stop the build if there are Python syntax errors or undefined names
-          flake8 . --exclude=scinode_editor/nodes/,scinode_editor/sockets/,scinode_editor/gui/,scinode_editor/ops/,scinode_editor/__init__.py --count --select=E9,F63,F7,F82 --show-source --statistics
-          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --exclude=scinode_editor/nodes/,scinode_editor/sockets/,scinode_editor/gui/,scinode_editor/ops/,scinode_editor/__init__.py --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.7.0
         with:

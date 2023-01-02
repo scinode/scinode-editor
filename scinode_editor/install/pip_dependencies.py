@@ -65,7 +65,7 @@ class BatomsInstallPackage(Operator):
 
 
     package: StringProperty(
-        name="package", default='ase',
+        name="package", default="ase",
         description="package name")
 
     modname: StringProperty(
