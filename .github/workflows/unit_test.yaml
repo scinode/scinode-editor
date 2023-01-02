@@ -24,6 +24,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: '5.0'
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
       - name: Copy addons to blender
         run: |
           mkdir -p $BLENDER_PATH/scripts/addons_contrib
@@ -46,12 +52,6 @@ jobs:
       - name: Install test dependencies
         run: |
           $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.7.0
-        with:
-          mongodb-version: '5.0'
-          mongodb-replica-set: test-rs
-          mongodb-port: 27017
       - name: Start daemon and setup database
         run: |
           scinode config setup --file tests/datas/config.json
