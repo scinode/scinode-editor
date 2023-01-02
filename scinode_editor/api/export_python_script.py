@@ -7,7 +7,7 @@ def export_python_script(nt, filename=None):
         filename = "script_{}.py".format(nt.name)
     with open(filename, "w") as f:
         f.write(script)
-        
+
 def build_nodetree_python_script(nt):
     """build_nodetree_python_script
     """

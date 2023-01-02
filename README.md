@@ -14,5 +14,3 @@ Check the [docs](https://scinode-editor.readthedocs.io/en/latest/index.html) and
 ## License
 
 [GNU General Public License v3.0](https://github.com/scinode/scinode-editor/blob/main/LICENSE)
-
-
