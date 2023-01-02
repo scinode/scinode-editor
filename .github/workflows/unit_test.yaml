@@ -1,14 +1,7 @@
-# Test the bnodes plugin using test
-name: Test bnodes blender plugin
+# Test the scinode editor plugin using test
+name: Test scinode editor blender plugin
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+on: [push]
 
 env:
   TEST_IMAGE_NAME: ghcr.io/beautiful-atoms/beautiful-atoms
