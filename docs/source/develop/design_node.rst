@@ -31,18 +31,18 @@ First create a UI node file (``my_sum_difference.py``).
 .. code:: Python
 
     import bpy
-    from bnodes.nodes.base_node import BnodesTreeNode
+    from scinode_editor.nodes.base_node import ScinodeTreeNode
 
-    class BnodesSumDifference(bpy.types.Node, BnodesTreeNode):
-        bl_idname = 'BnodesSumDifference'
+    class SumDifference(bpy.types.Node, ScinodeTreeNode):
+        bl_idname = 'SumDifference'
         bl_label = "SumDifference"
 
         def init(self, context):
             # Here we define the inputs and ouputs sockets.
-            self.inputs.new("BnodesSocketFloat", "input1")
-            self.inputs.new("BnodesSocketFloat", "input2")
-            self.outputs.new("BnodesSocketGeneral", "Sum")
-            self.outputs.new("BnodesSocketGeneral", "Difference")
+            self.inputs.new("ScinodeSocketFloat", "input1")
+            self.inputs.new("ScinodeSocketFloat", "input2")
+            self.outputs.new("ScinodeSocketGeneral", "Sum")
+            self.outputs.new("ScinodeSocketGeneral", "Difference")
             #
             self.kwargs = "input1, input2"
 
@@ -60,11 +60,11 @@ Step 2: Add Node Catagory
 .. code:: Python
 
     from nodeitems_utils import NodeCategory, NodeItem
-    from bnodes.node_catagory import BnodesCategory
+    from scinode_editor.node_catagory import ScinodeCategory
     node_categories = [
         # identifier, label, items list
-        BnodesCategory('Mynodes', "My Nodes", items=[
-            NodeItem("BnodesSumDifference", label="SumDifference", settings={}),
+        ScinodeCategory('Mynodes', "My Nodes", items=[
+            NodeItem("SumDifference", label="SumDifference", settings={}),
         ]),
     ]
 
@@ -77,22 +77,22 @@ Step 3: Register Classes and Catagory
     def register_class():
         from bpy.utils import register_class
         import nodeitems_utils
-        register_class(BnodesSumDifference)
+        register_class(SumDifference)
         nodeitems_utils.register_node_categories('MyNodeTree', node_categories)
 
     def unregister_class():
         from bpy.utils import unregister_class
         from bpy.utils import unregister_class
-        unregister_class(BnodesSumDifference)
+        unregister_class(SumDifference)
         nodeitems_utils.unregister_node_categories('MyNodeTree')
 
     if __name__ == "__main__":
         register_class()
 
 
-Copy the above code into Blender's text Editor, and run. Then in the ``Bnodes`` Editor, you can find a new Catagory for the new node.
+Copy the above code into Blender's text Editor, and run. Then in the ``Scinode`` Editor, you can find a new Catagory for the new node.
 
-.. image:: /_static/images/bnodes_custom_node_1.png
+.. image:: /_static/images/scinode_custom_node_1.png
    :width: 10cm
 
 

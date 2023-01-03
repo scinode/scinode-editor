@@ -24,7 +24,7 @@ There are four Editors in the image: 3D Viewport, Outliner, Timeline and Propert
   Editors
 ============
 
-Blender provides a number of different editors for displaying and modifying different aspects of data. The Editors used for Beautiful Nodes is ``Bnodes Editor``. Some other editors may be used are:
+Blender provides a number of different editors for displaying and modifying different aspects of data. The Editors used for Beautiful Nodes is ``Scinode Editor``. Some other editors may be used are:
 
 #. 3D Viewport
 #. Python Console

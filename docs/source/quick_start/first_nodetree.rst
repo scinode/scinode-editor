@@ -8,7 +8,7 @@ Here is a video tutorial: https://youtu.be/I7AgGz0WkhY
 
 New nodetree
 ===================
-#. Open Blender, and go to ``Bnodes`` Editor.
+#. Open Blender, and go to ``Scinode`` Editor.
 #. Create a new Nodetree, and change it name to ``my_first_nodetree``
 
 

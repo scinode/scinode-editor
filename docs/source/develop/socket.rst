@@ -21,10 +21,10 @@ However, if you want to create a input socket allowing more than one link, you c
 .. code:: python
 
    def init(self, context):
-        socket = self.inputs.new("BnodesSocketGeneral", "Input")
+        socket = self.inputs.new("ScinodeSocketGeneral", "Input")
          # Set the link_limit to 100 for "Input" socket
         socket.link_limit = 100
-        self.outputs.new("BnodesSocketGeneral", "Result")
+        self.outputs.new("ScinodeSocketGeneral", "Result")
 
 
 In the following schematic, node 3 has two output links for the ``Input`` socket. In this case, you have to tell the node how to handle multiple input links. One possible solution is to merge the inputs as one.
@@ -44,11 +44,11 @@ Add a callback function (here is ``update_sockets``) when update a property.
 .. code:: python
 
    import bpy
-   from bnodes.node.base_node import BnodesTreeNode, update_sockets
+   from scinode_editor.node.base_node import ScinodeTreeNode, update_sockets
 
 
-   class BnodesDebugMath(bpy.types.Node, BnodesTreeNode):
-      bl_idname = 'BnodesDebugMath'
+   class DebugMath(bpy.types.Node, ScinodeTreeNode):
+      bl_idname = 'DebugMath'
       bl_label = "Math Node"
       bl_icon = "VIEW_ORTHO"
 
@@ -71,11 +71,11 @@ Add a callback function (here is ``update_sockets``) when update a property.
 
       def init(self, context):
          if self.function == 'multiply_add':
-               self.inputs.new("BnodesSocketFloat", "y")
-               self.inputs.new("BnodesSocketFloat", "z")
+               self.inputs.new("ScinodeSocketFloat", "y")
+               self.inputs.new("ScinodeSocketFloat", "z")
          else:
-               self.inputs.new("BnodesSocketFloat", "y")
-         self.outputs.new("BnodesSocketFloat", "Result")
+               self.inputs.new("ScinodeSocketFloat", "y")
+         self.outputs.new("ScinodeSocketFloat", "Result")
 
       def draw_buttons(self, context, layout):
          layout.prop(self, "function", text="")

@@ -10,7 +10,7 @@ Here is the sidebar.
    :width: 5cm
    :align: right
 
-   The Sidebar of Bnodes Editor.
+   The Sidebar of Scinode Editor.
 
 
 Here are the panels of Beautiful Atoms.
@@ -18,4 +18,4 @@ Here are the panels of Beautiful Atoms.
 .. toctree::
    :maxdepth: 1
 
-   gui_bnodes
+   gui_scinode

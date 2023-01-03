@@ -1,13 +1,13 @@
-.. _gui-bnodes:
+.. _gui-scinode:
 
 
 ==============
-Bnodes panel
+Scinode panel
 ==============
 
 .. tip::
 
-   :Panel:     :menuselection:`Sidebar region --> Bnodes`
+   :Panel:     :menuselection:`Sidebar region --> Scinode`
 
 
 This panel is used to manage your workflow.
@@ -16,7 +16,7 @@ This panel is used to manage your workflow.
    :width: 5cm
    :align: right
 
-   The Sidebar of Bnodes Editor.
+   The Sidebar of Scinode Editor.
 
 Nodetree
 ==============
