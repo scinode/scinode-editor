@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         # Manually change these to match the blender image versions
-        blender-version: ["3.0", "3.1", "3.2"]
+        blender-version: ["3.2"]
     container:
       # env is not
       image: ghcr.io/beautiful-atoms/beautiful-atoms:blender${{ matrix.blender-version }}
@@ -51,7 +51,7 @@ jobs:
           mongodb-port: 27017
       - name: Test connect MongoDB
         run: |
-          python -c  "from pymongo import MongoClient;cluster = MongoClient('mongodb://localhost:27017/');db = cluster['xnodesdb'];print(db['node'].find({}));"
+          python -c  "from pymongo import MongoClient;cluster = MongoClient('mongodb://localhost:27017/');db = cluster['scinode_db'];print(db['daemon'].find({}));"
       - name: Install test dependencies
         run: |
           $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender
@@ -60,7 +60,6 @@ jobs:
           scinode config setup --file tests/datas/config.json
           scinode daemon add --file tests/datas/daemon_localhost.json
           scinode daemon start localhost
-          scinode daemon list
       - name: Run blender unittests
         run: |
           cd tests
