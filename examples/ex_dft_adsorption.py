@@ -5,22 +5,22 @@ import pickle
 bpy.ops.batoms.delete()
 bpy.ops.surface.fcc111_add(label='fcc111', symbol='Pt', size=(2, 2, 1))
 bpy.ops.batoms.molecule_add(label='co', formula='CO')
-nt = bpy.data.node_groups.new(name='adsorption', type='BnodesTree')
-surface = nt.nodes.new(type='BnodesStructure')
+nt = bpy.data.node_groups.new(name='adsorption', type='ScinodeTree')
+surface = nt.nodes.new(type='Structure')
 surface.structure = 'fcc111'
-adsorbate = nt.nodes.new(type='BnodesStructure')
+adsorbate = nt.nodes.new(type='Structure')
 adsorbate.structure = 'co'
 adsorption = nt.nodes.new(type='BuildAdsorption')
 analysis = nt.nodes.new(type='SurfaceAnalysis')
 pw = nt.nodes.new(type='QEPW')
-pw.directory = 'bnodes/adsorption'
+pw.directory = 'scinode/adsorption'
 parameter = nt.nodes.new(type='QEPWParameter')
 parameter.calculation = 'relax'
 pseudo = nt.nodes.new(type='QEPseudo')
 kpoint = nt.nodes.new(type='DFTKpoint')
-debug = nt.nodes.new(type='BnodesDebug')
-select = nt.nodes.new(type='BnodesSelect')
-numpy_node = nt.nodes.new(type='BnodesNumpy')
+debug = nt.nodes.new(type='Print')
+select = nt.nodes.new(type='Select')
+numpy_node = nt.nodes.new(type='Numpy')
 numpy_node.function = 'argmin'
 #
 nt.links.new(surface.outputs['Structure'], analysis.inputs['Surface'])
@@ -37,7 +37,7 @@ nt.links.new(pw.outputs['Energy'], select.inputs['Input'])
 nt.links.new(numpy_node.outputs['Result'], select.inputs['Index'])
 nt.links.new(select.outputs['Result'], debug.inputs['Input'])
 # add queue
-scheduler = nt.nodes.new(type='BnodesScheduler')
+scheduler = nt.nodes.new(type='Scheduler')
 scheduler.time = '0:20:00'
 scheduler.ntasks_per_node = 8
 scheduler.qos = 'job_epyc2_debug'

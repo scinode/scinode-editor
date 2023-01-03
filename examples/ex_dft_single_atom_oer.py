@@ -29,9 +29,9 @@ OH = Batoms("OH", from_ase=OH)
 O = Batoms("O", from_ase=O)
 OOH = Batoms("OOH", from_ase=OOH)
 # build workflow
-nt = bpy.data.node_groups.new(name='oer_pt111', type='BnodesTree')
+nt = bpy.data.node_groups.new(name='oer_pt111', type='ScinodeTree')
 # surface
-surface = nt.nodes.new(type='BnodesStructure')
+surface = nt.nodes.new(type='Structure')
 surface.name = 'FCC111'
 surface.structure = 'fcc111'
 # fix atoms constraint
@@ -46,14 +46,14 @@ pseudo = nt.nodes.new(type='QEPseudo')
 kpoint = nt.nodes.new(type='DFTKpoint')
 kpoint.size = (4, 4, 4)
 # add queue
-scheduler = nt.nodes.new(type='BnodesScheduler')
+scheduler = nt.nodes.new(type='Scheduler')
 scheduler.time = '1:59:00'
 scheduler.ntasks_per_node = 8
 # scheduler.qos = 'job_epyc2_debug'
 scheduler.config = '.xespresso-intel-2020b'
 #
 pw0 = nt.nodes.new(type='QEPW')
-pw0.directory = 'bnodes/oer/pt111'
+pw0.directory = 'scinode/oer/pt111'
 nt.links.new(constraint.outputs['Structure'], pw0.inputs['Structure'])
 nt.links.new(parameter.outputs['Parameter'], pw0.inputs['Parameter'])
 nt.links.new(pseudo.outputs['Pseudo'], pw0.inputs['Pseudo'])
@@ -63,10 +63,10 @@ nt.links.new(scheduler.outputs['Scheduler'], pw0.inputs['Scheduler'])
 analysis = nt.nodes.new(type='SurfaceAnalysis')
 nt.links.new(pw0.outputs['Structure'], analysis.inputs['Surface'])
 #
-scatter1 = nt.nodes.new(type='BnodesScatter')
+scatter1 = nt.nodes.new(type='Scatter')
 # structure
 for species in ['Ir', 'IrO', 'IrO2']:
-    sa = nt.nodes.new(type='BnodesStructure')
+    sa = nt.nodes.new(type='Structure')
     sa.name = species
     sa.structure = species
     adsorption = nt.nodes.new(type='BuildAdsorption')
@@ -77,7 +77,7 @@ for species in ['Ir', 'IrO', 'IrO2']:
     nt.links.new(adsorption.outputs['Structure'], scatter1.inputs['Input'])
     #
 pw1 = nt.nodes.new(type='QEPW')
-pw1.directory = 'bnodes/oer/pt111-sa'
+pw1.directory = 'scinode/oer/pt111-sa'
 nt.links.new(scatter1.outputs['Result'], pw1.inputs['Structure'])
 nt.links.new(parameter.outputs['Parameter'], pw1.inputs['Parameter'])
 nt.links.new(pseudo.outputs['Pseudo'], pw1.inputs['Pseudo'])
@@ -86,24 +86,24 @@ nt.links.new(scheduler.outputs['Scheduler'], pw1.inputs['Scheduler'])
 #
 # dos
 # add queue
-scheduler1 = nt.nodes.new(type='BnodesScheduler')
+scheduler1 = nt.nodes.new(type='Scheduler')
 scheduler1.time = '23:59:00'
 scheduler1.ntasks_per_node = 20
 # scheduler1.qos = 'job_epyc2_debug'
 scheduler1.config = '.xespresso-intel-2020b'
 dos = nt.nodes.new('QEDos')
-dos.directory = 'bnodes/oer/pt111-sa'
+dos.directory = 'scinode/oer/pt111-sa'
 parameter_dos = nt.nodes.new('QEDosParameter')
-debug_dos = nt.nodes.new("BnodesDebug")
+debug_dos = nt.nodes.new("Print")
 nt.links.new(pw1.outputs['Calculator'], dos.inputs['Calculator'])
 nt.links.new(parameter_dos.outputs['Parameter'], dos.inputs['Parameter'])
 nt.links.new(scheduler1.outputs['Scheduler'], dos.inputs['Scheduler'])
 nt.links.new(dos.outputs['Dos'], debug_dos.inputs['Input'])
 # projwfc
 projwfc = nt.nodes.new('QEProjwfc')
-projwfc.directory = 'bnodes/oer/pt111-sa'
+projwfc.directory = 'scinode/oer/pt111-sa'
 parameter_projwfc = nt.nodes.new('QEProjwfcParameter')
-debug_projwfc = nt.nodes.new("BnodesDebug")
+debug_projwfc = nt.nodes.new("Print")
 nt.links.new(pw1.outputs['Calculator'], projwfc.inputs['Calculator'])
 nt.links.new(parameter_projwfc.outputs['Parameter'], projwfc.inputs['Parameter'])
 nt.links.new(scheduler1.outputs['Scheduler'], projwfc.inputs['Scheduler'])
@@ -112,20 +112,20 @@ nt.links.new(projwfc.outputs['Pdos'], debug_projwfc.inputs['Input'])
 # analysis1 = nt.nodes.new(type='SurfaceAnalysis')
 # nt.links.new(pw1.outputs['Structure'], analysis1.inputs['Surface'])
 # structure
-# scatter2 = nt.nodes.new(type='BnodesScatter')
+# scatter2 = nt.nodes.new(type='Scatter')
 # for species in ['OH', 'O', 'OOH']:
-#     intermediate = nt.nodes.new(type='BnodesStructure')
+#     intermediate = nt.nodes.new(type='Structure')
 #     intermediate.name = species
 #     intermediate.structure = species
-#     debug = nt.nodes.new(type='BnodesDebug')
-#     select = nt.nodes.new(type='BnodesSelect')
-#     argmin = nt.nodes.new(type='BnodesNumpy')
+#     debug = nt.nodes.new(type='Print')
+#     select = nt.nodes.new(type='Select')
+#     argmin = nt.nodes.new(type='Numpy')
 #     argmin.function = 'argmin'
-#     subtract = nt.nodes.new(type='BnodesNumpy')
+#     subtract = nt.nodes.new(type='Numpy')
 #     subtract.function = 'subtract'
 #     adsorption = nt.nodes.new(type='BuildAdsorption')
 #     pw2 = nt.nodes.new(type='QEPW')
-#     pw2.directory = 'bnodes/oer/{}'.format(species)
+#     pw2.directory = 'scinode/oer/{}'.format(species)
 #     #
 #     nt.links.new(intermediate.outputs['Structure'], adsorption.inputs['Adsorbate'])
 #     nt.links.new(pw1.outputs['Structure'], adsorption.inputs['Surface'])
