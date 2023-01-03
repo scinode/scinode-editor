@@ -28,6 +28,10 @@ jobs:
         run: |
           mkdir -p $BLENDER_PATH/scripts/addons_contrib
           cp -r scinode_editor $BLENDER_PATH/scripts/addons_contrib/
+      - name: Install test dependencies
+        run: |
+          $BLENDERPY -m pip install pytest==6.2.5 pytest-blender
+          $BLENDERPY -m pip install git+https://github.com/scinode/scinode.git
       - name: Enable blender addons
         # Enable the blender blender addon and save user pref
         run: |
@@ -43,9 +47,6 @@ jobs:
       - name: Test import scinode_editor
         run: |
           blender -b --python-exit-code 1 --python-expr  "from scinode_editor.nodes.base_node import ScinodeTreeNode; n = ScinodeTreeNode()"
-      - name: Install test dependencies
-        run: |
-          $BLENDERPY -m pip install pytest==6.2.5 pytest-blender
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.7.0
         with:
