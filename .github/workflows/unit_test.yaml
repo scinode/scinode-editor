@@ -51,7 +51,7 @@ jobs:
           mongodb-port: 27017
       - name: Test connect MongoDB
         run: |
-          python -c  "from pymongo import MongoClient;cluster = MongoClient('mongodb://localhost:27017/')"
+          python -c  "from pymongo import MongoClient;cluster = MongoClient('mongodb://localhost:27017/');db = cluster['xnodesdb'];print(db['node'].find({}));"
       - name: Install test dependencies
         run: |
           $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender
