@@ -1,5 +1,5 @@
 {
-    "computer": "test",
-    "db_address": "mongodb+srv://superstar54:wangxing@cluster0.3qgyvd3.mongodb.net/?retryWrites=true&w=majority",
-    "db_name": "scinode_test"
+    "db_name": "scinode_db",
+    "db_address": "mongodb://localhost:27017/",
+    "computer": "thinkpad"
 }
