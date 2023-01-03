@@ -57,7 +57,7 @@ jobs:
         run: |
           scinode config setup --file tests/datas/config.json
           python -c "import pymongo;from scinode.config.scinode_config import db_config_datas;print(db_config_datas);"
-          python -c "import pymongo;scinode_client = pymongo.MongoClient('mongodb://127.0.0.1:27017/');scinodedb = scinode_client['scinode_db'];data = scinodedb['daemon'].find({'name': 'localhost'});print(data)"
+          python -c "import pymongo;scinode_client = pymongo.MongoClient('mongodb://localhost:27017/');scinodedb = scinode_client['scinode_db'];data = scinodedb['daemon'].find({});print(data)"
           # python -c "import pymongo;from scinode.config.scinode_config import db_config_datas;scinode_client = pymongo.MongoClient(db_config_datas['db_address']);scinodedb = scinode_client[db_config_datas['db_name']];data = list(scinodedb['daemon'].find({'name': 'localhost'}));print(data)"
       - name: Setup and start daemon
         run: |
