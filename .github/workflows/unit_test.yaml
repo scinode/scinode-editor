@@ -43,6 +43,9 @@ jobs:
       - name: Test import scinode_editor
         run: |
           blender -b --python-exit-code 1 --python-expr  "from scinode_editor.nodes.base_node import ScinodeTreeNode; n = ScinodeTreeNode()"
+      - name: Install test dependencies
+        run: |
+          $BLENDERPY -m pip install pytest==6.2.5 pytest-blender
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.7.0
         with:
@@ -52,9 +55,6 @@ jobs:
       - name: Test connect MongoDB
         run: |
           python -c  "from pymongo import MongoClient;cluster = MongoClient('mongodb://localhost:27017/');db = cluster['scinode_db'];print(db['daemon'].find({}));"
-      - name: Install test dependencies
-        run: |
-          $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender
       - name: Start daemon and setup database
         run: |
           scinode config setup --file tests/datas/config.json
