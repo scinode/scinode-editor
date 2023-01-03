@@ -6,6 +6,7 @@ from . import (
 )
 
 classes = (
+    ops_nodetree.NodeTreeSave,
     ops_nodetree.NodeTreeLaunch,
     ops_nodetree.NodeTreeUpdateState,
     ops_nodetree.NodeTreeResetState,

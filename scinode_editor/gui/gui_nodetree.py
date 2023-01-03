@@ -31,6 +31,8 @@ class SCINODE_PT_NodeTreePanel(ScinodeBasePanel):
         col = layout.column()
         col.prop(nt, 'daemon_name')
         col.prop(ntpanel, 'auto_update_state')
+        col.operator('scinode.nodetree_save', text="Save", icon = "AUTO")
+        col.separator()
         col.operator('scinode.nodetree_launch', text="Launch", icon = "AUTO")
         col.separator()
         col.operator('scinode.nodetree_update_state', text="Update state", icon = "FILE_REFRESH")

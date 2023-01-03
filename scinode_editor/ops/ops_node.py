@@ -19,10 +19,10 @@ class NodeReset(NodeOperatorBase):
     bl_description = "Reset node"
 
     def execute(self, context):
+        from scinode.core.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
-        from scinode.engine.nodetree_engine import EngineNodeTree
-        ent = EngineNodeTree(uuid=node.id_data.uuid)
-        ent.reset_node(node.name)
+        nt = DBNodeTree(uuid=node.id_data.uuid)
+        nt.reset_node(node.name)
         bpy.ops.scinode.nodetree_update_state()
         self.report({"INFO"}, "Reset node: {}".format(repr(node.name)))
         return {"FINISHED"}
@@ -34,10 +34,10 @@ class NodePause(NodeOperatorBase):
     bl_description = "Pause node"
 
     def execute(self, context):
+        from scinode.core.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
-        from scinode.engine.nodetree_engine import EngineNodeTree
-        ent = EngineNodeTree(uuid=node.id_data.uuid)
-        ent.pause_node(node.name)
+        nt = DBNodeTree(uuid=node.id_data.uuid)
+        nt.pause_node(node.name)
         bpy.ops.scinode.nodetree_update_state()
         self.report({"INFO"}, "Pause node: {}".format(repr(node.name)))
         return {"FINISHED"}
@@ -49,10 +49,10 @@ class NodePlay(NodeOperatorBase):
     bl_description = "Play node"
 
     def execute(self, context):
+        from scinode.core.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
-        from scinode.engine.nodetree_engine import EngineNodeTree
-        ent = EngineNodeTree(uuid=node.id_data.uuid)
-        ent.play_node(node.name)
+        nt = DBNodeTree(uuid=node.id_data.uuid)
+        nt.play_node(node.name)
         bpy.ops.scinode.nodetree_update_state()
         self.report({"INFO"}, "Play node: {}".format(repr(node.name)))
         return {"FINISHED"}
@@ -64,9 +64,9 @@ class NodeCancel(NodeOperatorBase):
     bl_description = "Cancel node"
 
     def execute(self, context):
+        from scinode.core.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
-        from scinode.engine.nodetree_engine import EngineNodeTree
-        ent = EngineNodeTree(uuid=node.id_data.uuid)
-        ent.cancel_node(node.name)
+        nt = DBNodeTree(uuid=node.id_data.uuid)
+        nt.cancel_node(node.name)
         self.report({"INFO"}, "Cancel node: {}".format(repr(node.name)))
         return {"FINISHED"}

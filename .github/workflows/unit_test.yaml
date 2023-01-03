@@ -24,12 +24,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Start MongoDB
-        uses: supercharge/mongodb-github-action@1.7.0
-        with:
-          mongodb-version: '5.0'
-          mongodb-replica-set: test-rs
-          mongodb-port: 27017
       - name: Copy addons to blender
         run: |
           mkdir -p $BLENDER_PATH/scripts/addons_contrib
@@ -49,6 +43,15 @@ jobs:
       - name: Test import scinode_editor
         run: |
           blender -b --python-exit-code 1 --python-expr  "from scinode_editor.nodes.base_node import ScinodeTreeNode; n = ScinodeTreeNode()"
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: '5.0'
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
+      - name: Test connect MongoDB
+        run: |
+          python -c  "from pymongo import MongoClient;cluster = MongoClient('mongodb://localhost:27017/')"
       - name: Install test dependencies
         run: |
           $BLENDERPY -m pip install pytest==6.2.5 flake8 pytest-blender

@@ -48,6 +48,7 @@ class ScinodeTree(bpy.types.NodeTree):
         ntdata = self.to_dict()
         lnt = LaunchNodeTree(ntdata)
         lnt.save()
+        self.update_state()
 
     def to_dict(self, short=False):
         """To dict
@@ -126,10 +127,9 @@ class ScinodeTree(bpy.types.NodeTree):
 
     def reset(self):
         """Reset all node."""
-        from scinode.engine.nodetree_engine import EngineNodeTree
-
-        ent = EngineNodeTree(uuid=self.uuid)
-        ent.reset()
+        from scinode.core.db_nodetree import DBNodeTree
+        nt = DBNodeTree(uuid=self.uuid)
+        nt.reset()
         self.update_state()
 
     def update_state(self):

@@ -11,6 +11,17 @@ class NodeTreeOperatorBase(bpy.types.Operator):
             return nodetree.bl_idname == "ScinodeTree"
         return False
 
+class NodeTreeSave(NodeTreeOperatorBase):
+    bl_idname = "scinode.nodetree_save"
+    bl_label = "Save Scinode Tree"
+    bl_description = "Save all nodes in the tree"
+
+    def execute(self, context):
+        nodetree = context.space_data.node_tree
+        nodetree.save_to_db()
+        self.report({"INFO"}, "save nodetree: {}".format(
+            repr(nodetree.name)))
+        return {"FINISHED"}
 
 class NodeTreeLaunch(NodeTreeOperatorBase):
     bl_idname = "scinode.nodetree_launch"
