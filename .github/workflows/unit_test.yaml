@@ -54,7 +54,7 @@ jobs:
           mongodb-port: 27017
       - name: Test connect MongoDB
         run: |
-          python -c  "from pymongo import MongoClient;cluster = MongoClient('mongodb://localhost:27017/');db = cluster['scinode_db'];print(db['daemon'].find({}));"
+          python -c "from scinode.database.client import scinodedb;data = list(scinodedb['daemon'].find({'name': 'localhost'}));print(data)"
       - name: Start daemon and setup database
         run: |
           scinode config setup --file tests/datas/config.json
