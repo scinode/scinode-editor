@@ -53,14 +53,13 @@ jobs:
           mongodb-version: '5.0'
           mongodb-replica-set: test-rs
           mongodb-port: 27017
-      - name: Test connect MongoDB
-        run: |
-          python -c "import pymongo;from scinode.config.scinode_config import db_config_datas;print(db_config_datas);"
-          # python -c "import pymongo;from scinode.config.scinode_config import db_config_datas;scinode_client = pymongo.MongoClient(db_config_datas['db_address']);scinodedb = scinode_client[db_config_datas['db_name']];data = list(scinodedb['daemon'].find({'name': 'localhost'}));print(data)"
-          # python -c "from scinode.database.client import scinodedb;data = list(scinodedb['daemon'].find({'name': 'localhost'}));print(data)"
-      - name: Start daemon and setup database
+      - name: Setup database
         run: |
           scinode config setup --file tests/datas/config.json
+          python -c "import pymongo;from scinode.config.scinode_config import db_config_datas;print(db_config_datas);"
+          python -c "import pymongo;from scinode.config.scinode_config import db_config_datas;scinode_client = pymongo.MongoClient(db_config_datas['db_address']);scinodedb = scinode_client[db_config_datas['db_name']];data = list(scinodedb['daemon'].find({'name': 'localhost'}));print(data)"
+      - name: Setup and start daemon
+        run: |
           scinode daemon add --file tests/datas/daemon_localhost.json
           scinode daemon start localhost
       - name: Run blender unittests
