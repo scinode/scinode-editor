@@ -311,17 +311,10 @@ class ScinodeTreeNode():
         paramters = get_input_parameters_from_db(dbdata)
         return paramters
 
-class ScinodeTreeBaseNode(bpy.types.Node, ScinodeTreeNode):
-    bl_idname = 'ScinodeTreeBaseNode'
+class BaseNode(bpy.types.Node, ScinodeTreeNode):
+    bl_idname = 'BaseNode'
     bl_label = "ScinodeTree Base Node"
 
-    x: bpy.props.BoolProperty(
-        name="x",
-        description="Is integer.",
-        default=False,
-    )
-
-    properties = ["x"]
 
     def init(self, context):
         pass
@@ -332,6 +325,11 @@ class ScinodeTreeBaseNode(bpy.types.Node, ScinodeTreeNode):
 
     def get_executor(self):
         return None
+
+    def copy(self, node):
+        print("Copying from node: ", node.name)
+        newnode = self.id_data.nodes[-1]
+        newnode.uuid = ""
 
 
 def update_sockets(self, context):

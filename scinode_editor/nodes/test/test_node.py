@@ -1,10 +1,10 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class TestFloat(bpy.types.Node, ScinodeTreeNode):
+class TestFloat(BaseNode):
     bl_idname = 'TestFloat'
     bl_label = "Float Node"
     bl_icon = "VIEW_ORTHO"
@@ -26,7 +26,7 @@ class TestFloat(bpy.types.Node, ScinodeTreeNode):
             "name": "test_float",
         }
 
-class TestAdd(bpy.types.Node, ScinodeTreeNode):
+class TestAdd(BaseNode):
     bl_idname = 'TestAdd'
     bl_label = "Add Node"
     bl_icon = "VIEW_ORTHO"
@@ -49,7 +49,7 @@ class TestAdd(bpy.types.Node, ScinodeTreeNode):
                 "name": "test_add",
                 }
 
-class TestGreater(bpy.types.Node, ScinodeTreeNode):
+class TestGreater(BaseNode):
     bl_idname = 'TestGreater'
     bl_label = "Greater Node"
     bl_icon = "VIEW_ORTHO"
@@ -74,7 +74,7 @@ class TestGreater(bpy.types.Node, ScinodeTreeNode):
                 "name": "test_greater",
                 }
 
-class TestLess(bpy.types.Node, ScinodeTreeNode):
+class TestLess(BaseNode):
     bl_idname = 'TestLess'
     bl_label = "Less Node"
     bl_icon = "VIEW_ORTHO"
@@ -99,7 +99,7 @@ class TestLess(bpy.types.Node, ScinodeTreeNode):
                 "name": "test_less",
                 }
 
-class TestRange(bpy.types.Node, ScinodeTreeNode):
+class TestRange(BaseNode):
     bl_idname = 'TestRange'
     bl_label = "Range Node"
     bl_icon = "VIEW_ORTHO"

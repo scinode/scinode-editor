@@ -24,7 +24,7 @@ class DFTOptmizer(bpy.types.Node, ScinodeTreeNode):
 
     def init(self, context):
         self.inputs.new('ScinodeSocketStructure', "Structure")
-        self.inputs.new('bnodessocket.calculator', "Calculator")
+        self.inputs.new('ScinodeSocketCalculator', "Calculator")
 
         self.outputs.new('ScinodeSocketStructure', "Trajectory")
         self.outputs.new('ScinodeSocketEnergy', "Energy")

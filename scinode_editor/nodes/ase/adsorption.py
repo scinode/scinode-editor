@@ -1,14 +1,14 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode, update_sockets
+from scinode_editor.nodes.base_node import BaseNode, update_sockets
 
 func_items = [
 ("Index", "Index", "", 0),
 ("Site", "Site", "", 1),
 ]
 
-class ASEAdsorption(bpy.types.Node, ScinodeTreeNode):
+class ASEAdsorption(BaseNode):
     bl_idname = 'ASEAdsorption'
     dtype = 'ASEAdsorption'
     bl_label = "Adsorption"

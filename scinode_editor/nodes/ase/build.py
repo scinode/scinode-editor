@@ -1,10 +1,10 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode, update_sockets
+from scinode_editor.nodes.base_node import BaseNode, update_sockets
 
 
-class ASEAtoms(bpy.types.Node, ScinodeTreeNode):
+class ASEAtoms(BaseNode):
     bl_idname = 'ASEAtoms'
     dtype = 'ASEAtoms'
     bl_label = "Atoms"
@@ -34,7 +34,7 @@ class ASEAtoms(bpy.types.Node, ScinodeTreeNode):
 
 
 
-class ASEBulk(bpy.types.Node, ScinodeTreeNode):
+class ASEBulk(BaseNode):
     bl_idname = 'ASEBulk'
     dtype = 'ASEBulk'
     bl_label = "Bulk"
@@ -69,7 +69,7 @@ class ASEBulk(bpy.types.Node, ScinodeTreeNode):
                 }
 
 
-class ASEMolecule(bpy.types.Node, ScinodeTreeNode):
+class ASEMolecule(BaseNode):
     bl_idname = 'ASEMolecule'
     dtype = 'ASEMolecule'
     bl_label = "Molecule"
@@ -116,7 +116,7 @@ func_items = [
 ("diamond111", "diamond111", "", 13),
 ]
 
-class ASESurface(bpy.types.Node, ScinodeTreeNode):
+class ASESurface(BaseNode):
     bl_idname = 'ASESurface'
     dtype = 'ASESurface'
     bl_label = "Surface"

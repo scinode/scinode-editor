@@ -2,10 +2,10 @@
 
 import bpy
 from bpy.types import Node
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class Print(Node, ScinodeTreeNode):
+class Print(BaseNode):
     bl_idname = 'Print'
     dtype = 'Print'
     bl_label = "Print"
@@ -53,7 +53,7 @@ class Print(Node, ScinodeTreeNode):
 
 
 
-class Input_to_Output(bpy.types.Node, ScinodeTreeNode):
+class Input_to_Output(BaseNode):
     bl_idname = "UtilsInput_to_Output"
     bl_label = "Input_to_Output"
 

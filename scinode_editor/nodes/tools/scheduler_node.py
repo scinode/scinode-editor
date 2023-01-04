@@ -1,11 +1,11 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class BnodesScheduler(bpy.types.Node, ScinodeTreeNode):
-    bl_idname = 'BnodesScheduler'
+class Scheduler(BaseNode):
+    bl_idname = 'Scheduler'
     bl_label = "Scheduler"
 
 

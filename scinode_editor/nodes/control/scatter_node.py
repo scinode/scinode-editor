@@ -1,10 +1,10 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class Scatter(bpy.types.Node, ScinodeTreeNode):
+class Scatter(BaseNode):
     bl_idname = 'Scatter'
     dtype = 'Scatter'
     bl_label = "Scatter"

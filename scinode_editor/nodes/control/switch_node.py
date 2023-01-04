@@ -1,10 +1,10 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class Switch(bpy.types.Node, ScinodeTreeNode):
+class Switch(BaseNode):
     bl_idname = 'Switch'
     dtype = 'Switch'
     bl_label = "Switch"

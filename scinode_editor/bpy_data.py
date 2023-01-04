@@ -16,11 +16,13 @@ class ScinodeDaemon(bpy.types.PropertyGroup):
     name: StringProperty(name="name", default='')
     pid: IntProperty(name="pid", default=0)
     workdir: StringProperty(name="workdir", default="")
+    computer: StringProperty(name="computer", default="")
     lastUpdate: IntProperty(name="lastUpdate", default=100)
 
     def as_dict(self) -> dict:
         setdict = {
             'name': self.name,
+            'computer': self.computer,
             'lastUpdate': self.lastUpdate,
             'pid': self.pid,
             'workdir': self.workdir,

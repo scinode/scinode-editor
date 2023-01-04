@@ -1,10 +1,10 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode, update_sockets
+from scinode_editor.nodes.base_node import BaseNode, update_sockets
 
 
-class ASEAtomsAttribute(bpy.types.Node, ScinodeTreeNode):
+class ASEAtomsAttribute(BaseNode):
     bl_idname = 'ASEAtomsAttribute'
     dtype = 'ASEAtomsAttribute'
     bl_label = "AtomsAttribute"
@@ -28,7 +28,7 @@ class ASEAtomsAttribute(bpy.types.Node, ScinodeTreeNode):
                 "type": "function",
                 }
 
-class ASEEOS(bpy.types.Node, ScinodeTreeNode):
+class ASEEOS(BaseNode):
     bl_idname = "ASEEOS"
     bl_label = "EOS"
 

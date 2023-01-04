@@ -1,9 +1,7 @@
 
-# from . import ()
 from . import base_node
 
-classes = [base_node.ScinodeTreeBaseNode,
-]
+classes = [base_node.BaseNode]
 
 from scinode_editor import enable_module, disable_module
 

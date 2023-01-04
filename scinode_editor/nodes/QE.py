@@ -1,11 +1,11 @@
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 node_names = []
 
 
-class QEPWParameter(bpy.types.Node, ScinodeTreeNode):
+class QEPWParameter(BaseNode):
     bl_idname = "QEPWParameter"
     bl_label = "PWParameter"
 
@@ -58,7 +58,7 @@ class QEPWParameter(bpy.types.Node, ScinodeTreeNode):
 
 node_names.append(QEPWParameter)
 
-class QEDosParameter(bpy.types.Node, ScinodeTreeNode):
+class QEDosParameter(BaseNode):
     bl_idname = "QEDosParameter"
     bl_label = "DosParameter"
 
@@ -85,7 +85,7 @@ class QEDosParameter(bpy.types.Node, ScinodeTreeNode):
 
 node_names.append(QEDosParameter)
 
-class QEProjwfcParameter(bpy.types.Node, ScinodeTreeNode):
+class QEProjwfcParameter(BaseNode):
     bl_idname = "QEProjwfcParameter"
     bl_label = "ProjwfcParameter"
 
@@ -112,7 +112,7 @@ class QEProjwfcParameter(bpy.types.Node, ScinodeTreeNode):
 
 node_names.append(QEProjwfcParameter)
 
-class QEPseudo_SSSP(bpy.types.Node, ScinodeTreeNode):
+class QEPseudo_SSSP(BaseNode):
     bl_idname = "QEPseudo_SSSP"
     bl_label = "Pseudo_SSSP"
 
@@ -142,7 +142,7 @@ class QEPseudo_SSSP(bpy.types.Node, ScinodeTreeNode):
 
 node_names.append(QEPseudo_SSSP)
 
-class QEPW(bpy.types.Node, ScinodeTreeNode):
+class QEPW(BaseNode):
     bl_idname = "QEPW"
     bl_label = "PW"
 
@@ -176,7 +176,7 @@ class QEPW(bpy.types.Node, ScinodeTreeNode):
 
 node_names.append(QEPW)
 
-class QEDos(bpy.types.Node, ScinodeTreeNode):
+class QEDos(BaseNode):
     bl_idname = "QEDos"
     bl_label = "Dos"
 
@@ -205,7 +205,7 @@ class QEDos(bpy.types.Node, ScinodeTreeNode):
 
 node_names.append(QEDos)
 
-class QEProjwfc(bpy.types.Node, ScinodeTreeNode):
+class QEProjwfc(BaseNode):
     bl_idname = "QEProjwfc"
     bl_label = "Projwfc"
 

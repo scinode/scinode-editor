@@ -3,7 +3,7 @@ from scinode_editor.nodes.base_node import ScinodeTreeNode
 
 
 class DFTNEB(bpy.types.Node, ScinodeTreeNode):
-    '''Bnodes NEB node'''
+    '''NEB node'''
     bl_idname = 'DFTNEB'
     bl_label = "NEB"
     bl_icon = 'SMOOTHCURVE'
@@ -47,7 +47,7 @@ class DFTNEB(bpy.types.Node, ScinodeTreeNode):
     def init(self, context):
         self.inputs.new('ScinodeSocketStructure', "Start")
         self.inputs.new('ScinodeSocketStructure', "End")
-        self.inputs.new('bnodessocket.calculator', "Calculator")
+        self.inputs.new('ScinodeSocketCalculator', "Calculator")
 
 
         self.outputs.new('ScinodeSocketStructure', "Trajectory")

@@ -1,8 +1,8 @@
 import bpy
-from bnodes.nodes.base_node import BnodesTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class SurfaceAnalysis(bpy.types.Node, BnodesTreeNode):
+class SurfaceAnalysis(BaseNode):
     bl_idname = 'SurfaceAnalysis'
     bl_label = "Surface Analysis"
 

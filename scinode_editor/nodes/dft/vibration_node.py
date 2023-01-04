@@ -22,7 +22,7 @@ class DFTVibration(bpy.types.Node, ScinodeTreeNode):
 
     def init(self, context):
         self.inputs.new('ScinodeSocketStructure', "Structure")
-        self.inputs.new('bnodessocket.calculator', "Calculator")
+        self.inputs.new('ScinodeSocketCalculator', "Calculator")
 
         self.outputs.new('ScinodeSocketStructure', "Structure")
         self.outputs.new('ScinodeSocketEnergy', "vib")

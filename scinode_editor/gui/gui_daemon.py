@@ -41,6 +41,7 @@ class SCINODE_UL_Daemon(UIList):
                        emboss=False)
             row = split.row()#align=True)
             row.emboss = 'NONE_OR_STATUS'
+            row.prop(daemon, "computer", text="")
             row.prop(daemon, "pid", text="")
             row.prop(daemon, "lastUpdate", text="")
         elif self.layout_type == 'GRID':

@@ -1,7 +1,7 @@
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
-class Batoms(bpy.types.Node, ScinodeTreeNode):
+class Batoms(BaseNode):
     bl_idname = 'Batoms'
     bl_label = "Batoms"
 
@@ -68,7 +68,7 @@ class Batoms(bpy.types.Node, ScinodeTreeNode):
             batoms = Batoms(label=properties["batoms"]["value"], from_ase=atoms)
 
 
-class ViewBatoms(bpy.types.Node, ScinodeTreeNode):
+class ViewBatoms(BaseNode):
     bl_idname = 'ViewBatoms'
     bl_label = "ViewBatoms"
 
@@ -105,7 +105,7 @@ class ViewBatoms(bpy.types.Node, ScinodeTreeNode):
 
 
 
-class BatomsScaleCell(bpy.types.Node, ScinodeTreeNode):
+class BatomsScaleCell(BaseNode):
     bl_idname = 'BatomsScaleCell'
     bl_label = "Set Cell"
 

@@ -1,9 +1,9 @@
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class BnodesInput(bpy.types.Node, ScinodeTreeNode):
-    bl_idname = 'BnodesInput'
+class GeneralInput(BaseNode):
+    bl_idname = 'GeneralInput'
     bl_label = "Float"
 
     Input: bpy.props.FloatProperty(name="Integer", default=0.0)

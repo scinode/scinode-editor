@@ -1,8 +1,8 @@
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class Integer(bpy.types.Node, ScinodeTreeNode):
+class Integer(BaseNode):
     bl_idname = 'Integer'
     bl_label = "Integer"
 
@@ -26,7 +26,7 @@ class Integer(bpy.types.Node, ScinodeTreeNode):
         }
 
 
-class Float(bpy.types.Node, ScinodeTreeNode):
+class Float(BaseNode):
     bl_idname = 'Float'
     bl_label = "Float"
 
@@ -50,7 +50,7 @@ class Float(bpy.types.Node, ScinodeTreeNode):
 
 
 
-class String(bpy.types.Node, ScinodeTreeNode):
+class String(BaseNode):
     bl_idname = 'String'
     bl_label = "String"
 
@@ -73,7 +73,7 @@ class String(bpy.types.Node, ScinodeTreeNode):
         }
 
 
-class Bool(bpy.types.Node, ScinodeTreeNode):
+class Bool(BaseNode):
     bl_idname = 'Bool'
     bl_label = "Bool"
 

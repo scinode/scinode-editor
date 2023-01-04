@@ -1,10 +1,10 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class Update(bpy.types.Node, ScinodeTreeNode):
+class Update(BaseNode):
     bl_idname = 'Update'
     dtype = 'Update'
     bl_label = "Update"

@@ -1,10 +1,10 @@
 
 
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode
+from scinode_editor.nodes.base_node import BaseNode
 
 
-class DFTKpoints(bpy.types.Node, ScinodeTreeNode):
+class DFTKpoints(BaseNode):
     bl_idname = "DFTKpoints"
     bl_label = "Kpoints"
 

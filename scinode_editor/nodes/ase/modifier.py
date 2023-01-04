@@ -1,8 +1,8 @@
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode, update_sockets
+from scinode_editor.nodes.base_node import BaseNode, update_sockets
 
 
-class ASECellTransformatoin(bpy.types.Node, ScinodeTreeNode):
+class ASECellTransformatoin(BaseNode):
     bl_idname = 'ASECellTransformatoin'
     dtype = 'ASECellTransformatoin'
     bl_label = "CellTransformatoin"
@@ -35,7 +35,7 @@ class ASECellTransformatoin(bpy.types.Node, ScinodeTreeNode):
 
 
 
-class ASEReplaceAtoms(bpy.types.Node, ScinodeTreeNode):
+class ASEReplaceAtoms(BaseNode):
     bl_idname = 'ASEReplaceAtoms'
     dtype = 'ASEReplaceAtoms'
     bl_label = "ReplaceAtoms"
@@ -62,7 +62,7 @@ class ASEReplaceAtoms(bpy.types.Node, ScinodeTreeNode):
         }
 
 
-class ASEDeleteAtoms(bpy.types.Node, ScinodeTreeNode):
+class ASEDeleteAtoms(BaseNode):
     bl_idname = 'ASEDeleteAtoms'
     dtype = 'ASEDeleteAtoms'
     bl_label = "DeleteAtoms"

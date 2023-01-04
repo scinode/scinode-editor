@@ -1,7 +1,7 @@
 import bpy
-from scinode_editor.nodes.base_node import ScinodeTreeNode, update_sockets
+from scinode_editor.nodes.base_node import BaseNode, update_sockets
 
-class ASEFixAtoms(bpy.types.Node, ScinodeTreeNode):
+class ASEFixAtoms(BaseNode):
     bl_idname = "ASEFixAtoms"
     bl_label = "FixAtoms"
 

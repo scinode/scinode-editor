@@ -5,7 +5,7 @@ from . import (
 )
 
 classes = (
-        scheduler_node.BnodesScheduler,
+        scheduler_node.Scheduler,
 )
 
 

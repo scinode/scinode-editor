@@ -50,14 +50,15 @@ class DaemonUpdate(Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        from scinode.database.daemon import DaemonDB
+        from scinode.database.daemon import DaemonClient
         scinode = context.scene.Scinode
         scinode.settings_daemon.clear()
-        daemondb = DaemonDB()
+        daemondb = DaemonClient()
         data = daemondb.get_data(0)
         for d in data:
             item = scinode.settings_daemon.add()
             item.name = d['name']
+            item.computer = d['computer']
             item.lastUpdate = d["lastUpdate"]
             item.pid = d["pid"]
         return {'FINISHED'}
