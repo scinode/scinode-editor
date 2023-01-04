@@ -47,6 +47,12 @@ jobs:
         run: |
           $BLENDERPY -m pip install pytest==6.2.5 pytest-blender
           # $BLENDERPY -m pip install git+https://github.com/scinode/scinode.git@develop
+      - name: Create mongo Docker container
+        id: build_mongo_docker
+        uses: DigiPie/mongo-action@v1.0.1
+        with:
+          image-version: latest
+          port: 27017
       - name: Setup config
         run: |
           scinode config setup --file tests/datas/config.json
