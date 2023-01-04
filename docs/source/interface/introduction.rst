@@ -5,7 +5,7 @@ Introduction
 
 .. note::
 
-   Blender provides detailed manual online. Here we only cover the sections which are used by Beautiful Nodes.
+   Blender provides detailed manual online. Here we only cover the sections which are used by Scinode.
 
 After starting Blender and closing the :ref:`Splash Screen <splash>`
 the Blender window should look something similar to the image below:
@@ -24,14 +24,9 @@ There are four Editors in the image: 3D Viewport, Outliner, Timeline and Propert
   Editors
 ============
 
-Blender provides a number of different editors for displaying and modifying different aspects of data. The Editors used for Beautiful Nodes is ``Scinode Editor``. Some other editors may be used are:
+Blender provides a number of different editors for displaying and modifying different aspects of data. The Editors used for Scinode is ``Scinode Editor``. Some other editors may be used are: Python Console, 3D Viewport, Outliner, Spreadsheet
 
-#. 3D Viewport
-#. Python Console
-#. Outliner
-#. Spreadsheet
-
-.. figure:: /_static/images/editors_index_menu.png
+.. figure:: /_static/images/editors_menu.png
    :align: center
 
    The Editor Type selector.

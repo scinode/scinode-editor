@@ -1,4 +1,4 @@
-.. _advance_socket:
+.. _addon:
 
 ===========================================
 Make a Blender addon
@@ -9,8 +9,8 @@ In previous example, we made a new ``MySumDifference`` node. But how can we add 
 There are two options:
 
 Add you Python code into ``Scinode Editor`` addon directly
-====================================================
-You can make this change locally on your computer. Or, if you like to contribute to Beautiful Nodes project and share your nodes with other, please feel free to create Merge Requests on our Github page: https://github.com/beautiful-atoms/beautiful-nodes/
+============================================================
+You can make this change locally on your computer. Or, if you like to contribute to Scinode-Editor project and share your nodes with other, please feel free to create Merge Requests on our Github page: https://github.com/scinode/scinode-editor/
 
 
 Make a new Blender addon

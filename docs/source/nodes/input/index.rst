@@ -1,11 +1,10 @@
 
-Math
+Input
 ===========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   math
-   vector
-   matrix
+   base_type
+   batoms

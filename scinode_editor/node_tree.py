@@ -6,6 +6,29 @@ logger.setLevel("DEBUG")
 
 
 class ScinodeTree(bpy.types.NodeTree):
+    """Nodetree is a collection of nodes and links.
+
+    Attributes:
+
+    Examples:
+
+    >>> nt = bpy.data.node_groups.new(name='test', type='ScinodeTree')
+
+    add nodes:
+
+    >>> float1 = nt.nodes.new("TestFloat")
+    >>> add1 = nt.nodes.new("TestAdd")
+
+    add links:
+
+    >>> nt.links.new(float1.outputs[0], add1.inputs[0])
+
+    Launch the nodetree:
+
+    >>> nt.launch()
+
+    """
+
     bl_idname = 'ScinodeTree'
     bl_label = "Scinode Editor"
     bl_icon = 'KEYTYPE_EXTREME_VEC'
@@ -26,7 +49,6 @@ class ScinodeTree(bpy.types.NodeTree):
     def launch(self, daemon_name=None):
         """Launch the nodetree."""
         from scinode.engine.nodetree_launch import LaunchNodeTree
-        from pprint import pprint
 
         logger.info("Launch NodeTree: {}".format(self.name))
         if daemon_name is not None:
@@ -34,7 +56,6 @@ class ScinodeTree(bpy.types.NodeTree):
         self.state = "CREATED"
         self.action = "LAUNCH"
         ntdata = self.to_dict()
-        # pprint(ntdata)
         lnt = LaunchNodeTree(ntdata)
         lnt.launch()
         self.update_state()
@@ -51,7 +72,7 @@ class ScinodeTree(bpy.types.NodeTree):
         self.update_state()
 
     def to_dict(self, short=False):
-        """To dict
+        """Export nodetree to a dict.
 
         Returns:
             dict: nodetree data
@@ -80,7 +101,7 @@ class ScinodeTree(bpy.types.NodeTree):
         return data
 
     def meta_to_dict(self):
-        """save meta data"""
+        """Export metadata to a dict."""
         meta = {
             "identifier": self.bl_idname,
             "daemon_name": self.daemon_name,
@@ -96,8 +117,7 @@ class ScinodeTree(bpy.types.NodeTree):
         return s
 
     def nodes_to_dict(self, short=False):
-        """Save nodes to dbdata
-        """
+        """Export nodes to a dict."""
         # save all relations using links
         nodes = {}
         for node in self.nodes:
@@ -109,8 +129,7 @@ class ScinodeTree(bpy.types.NodeTree):
 
 
     def links_to_dict(self):
-        """Save links to dbdata
-        """
+        """Export links to a dict."""
         # save all relations using links
         dbdata = []
         for link in self.links:
@@ -126,13 +145,15 @@ class ScinodeTree(bpy.types.NodeTree):
         return dbdata
 
     def reset(self):
-        """Reset all node."""
+        """Reset all nodes."""
         from scinode.core.db_nodetree import DBNodeTree
         nt = DBNodeTree(uuid=self.uuid)
         nt.reset()
         self.update_state()
 
     def update_state(self):
+        """Update state of nodetree and its nodes.
+        """
         from scinode.database.db import scinodedb
 
         query = {"uuid": self.uuid}
@@ -145,5 +166,7 @@ class ScinodeTree(bpy.types.NodeTree):
         self.update_node_state()
 
     def update_node_state(self):
+        """Update node state.
+        """
         for node in self.nodes:
             node.update_state()

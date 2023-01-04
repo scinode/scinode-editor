@@ -7,13 +7,7 @@ Socket
 Link limit
 ===================
 
-For output socket, there is no limit on the number of links connected with them. In the following schematic, node 1 has two output links for the ``Result`` socket.
-
-
-.. image:: /_static/images/scinode-output-sockets.png
-   :width: 10cm
-
-For inputs sockets, there is a link_limit. The default ``link_limit`` = 1, which means the input socket can only have one input link. This is how we define a function, whose arguments should be unique.
+For output socket, there is no limit on the number of links connected with them. For inputs sockets, there is a link_limit. The default ``link_limit`` = 1, which means the input socket can only have one input link. This is how we define a function, whose arguments should be unique.
 
 
 However, if you want to create a input socket allowing more than one link, you can set ``link_limit`` to a large number when creating the socket.
@@ -27,12 +21,8 @@ However, if you want to create a input socket allowing more than one link, you c
         self.outputs.new("ScinodeSocketGeneral", "Result")
 
 
-In the following schematic, node 3 has two output links for the ``Input`` socket. In this case, you have to tell the node how to handle multiple input links. One possible solution is to merge the inputs as one.
+In this case, you have to tell the node how to handle multiple input links. One possible solution is to merge the inputs as one (list or dict).
 
-
-
-.. image:: /_static/images/scinode-input-sockets.png
-   :width: 10cm
 
 
 Dynamic sockets

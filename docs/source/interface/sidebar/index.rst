@@ -13,7 +13,7 @@ Here is the sidebar.
    The Sidebar of Scinode Editor.
 
 
-Here are the panels of Beautiful Atoms.
+Here are the panels of Scinode.
 
 .. toctree::
    :maxdepth: 1

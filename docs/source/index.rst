@@ -1,12 +1,12 @@
-.. Beautiful Nodes documentation
+.. Scinode Editor documentation
 
-Welcome to Beautiful Nodes's documentation!
+Welcome to Scinode Editor's documentation!
 ===========================================
 
-Beautiful Nodes is a platform to design node-based workflows powered by SciNode_ and Blender_
+Scinode Editor is a platform to design node-based workflows powered by SciNode_ and Blender_
 
 .. figure:: /_static/images/scinode-example.png
-   :width: 20cm
+   :width: 10cm
 
 
 .. toctree::
@@ -17,6 +17,8 @@ Beautiful Nodes is a platform to design node-based workflows powered by SciNode_
    interface/index
    quick_start/index
    tutorials/index
+   nodetree
+   nodes/index
    develop/index
    advance_topics/index
 

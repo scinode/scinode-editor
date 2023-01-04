@@ -1,9 +1,9 @@
 
-Nodes
+Utils
 ===========================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   structure
+   built_in

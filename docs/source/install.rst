@@ -26,33 +26,18 @@ If you want to use Quantum Espresso,
 
 
 
-
-
-Install SciNode inside Blender
-===============================
-
-On Linux and MacOS, go to your Blender python directory, e.g. ``blender-3.1.0-linux-x64/3.1/python/bin``, install pip_::
-
-    $ ./python3.10 -m ensurepip
-    $ ./python3.10 -m pip install --upgrade pip
-
-Install SciNode_ inside Blender::
-
-    $ ./pip3 install --upgrade scinode
-
-
 Install Scinode-Editor inside Blender
-===============================
+=======================================
 
-- Download the latest version (`beautiful-nodes.zip <https://github.com/beautiful-atoms/beautiful-nodes/archive/refs/heads/main.zip>`__).
+- Download the latest version (`scinode-editor.zip <https://github.com/scinode/scinode-editor/archive/refs/heads/main.zip>`__).
 
-- Extract the file, move the folder ``scinode_editor`` to Blender addons folder ``$HOME/.config/blender/3.1/scripts/addons/``.
+- Extract the file, and move the folder ``scinode_editor`` to Blender addons folder ``$HOME/.config/blender/3.1/scripts/addons/``.
 
 - Enable the addon in the Preferences setting. Please open a Blender Python console, and run the following code to enable the scinode-editor::
 
     import addon_utils
     import bpy
-    addon_utils.enable('scinode-editor', default_set=True)
+    addon_utils.enable('Scinode Editor', default_set=True)
     bpy.context.preferences.view.use_translate_new_dataname = False
     bpy.ops.wm.save_userpref()
 

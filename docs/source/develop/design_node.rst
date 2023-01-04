@@ -92,9 +92,6 @@ Step 3: Register Classes and Catagory
 
 Copy the above code into Blender's text Editor, and run. Then in the ``Scinode`` Editor, you can find a new Catagory for the new node.
 
-.. image:: /_static/images/scinode_custom_node_1.png
-   :width: 10cm
-
 
 Step 4: Add executor node
 ================================
