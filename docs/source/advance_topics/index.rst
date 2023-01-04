@@ -10,3 +10,5 @@ In this guide, you will learn advance setting for your node-based workflow.
    :caption: Contents:
 
    control_node
+   socket
+   vectorized_node

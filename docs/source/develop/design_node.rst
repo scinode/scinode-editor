@@ -31,9 +31,9 @@ First create a UI node file (``my_sum_difference.py``).
 .. code:: Python
 
     import bpy
-    from scinode_editor.nodes.base_node import ScinodeTreeNode
+    from scinode_editor.nodes.base_node import BaseNode
 
-    class SumDifference(bpy.types.Node, ScinodeTreeNode):
+    class SumDifference(BaseNode):
         bl_idname = 'SumDifference'
         bl_label = "SumDifference"
 
@@ -49,7 +49,7 @@ First create a UI node file (``my_sum_difference.py``).
 
         def get_executor(self):
             # where can we import the execute node.
-            return {"path": "mypackage.my_sum_difference",
+            return {"path": "mypackage.sum_difference",
                     "name": "sum_difference"}
 
 
@@ -108,4 +108,4 @@ Now let's build a custom executor (function) ``SumDifference`` for our node. Let
             difference = input1 - input2
             return sum, difference
 
-It is important that we add this executor to a python package (or into a Python path), thus we could import it in our node. We can create own Python package, e.g. ``mynode``. Add the above executor file into this package, e.g. add into ``mynode.executors.sum_difference``.
+It is important that we add this executor to a python package (or into a Python path), thus we could import it in our node. We can create own Python package, e.g. ``mypackage``. Add the above executor file into this package, e.g. add into ``mypackage.sum_difference``.
