@@ -5,9 +5,9 @@ on: [push]
 
 env:
   TEST_IMAGE_NAME: ghcr.io/beautiful-atoms/beautiful-atoms
-  scinode_db_address: ${{ secrets.scinode_db_address }}
+  scinode_db_address: ${{ secrets.SCINODE_DB_ADDRESS }}
   scinode_db_name: scinode_db
-  scinode_db_computer: test
+  scinode_computer: test
 
 jobs:
   unittests:
