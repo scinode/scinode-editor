@@ -20,7 +20,7 @@ jobs:
       # env is not
       image: ghcr.io/beautiful-atoms/beautiful-atoms:blender${{ matrix.blender-version }}
       # Will need pytest installation
-      options: --user root
+      # options: --user root
 
     steps:
       - uses: actions/checkout@v2
