@@ -5,6 +5,8 @@ from scinode_editor.nodes.base_node import BaseNode, update_sockets
 
 
 class ASEAtoms(BaseNode):
+    """
+    """
     bl_idname = 'ASEAtoms'
     dtype = 'ASEAtoms'
     bl_label = "Atoms"
@@ -35,6 +37,8 @@ class ASEAtoms(BaseNode):
 
 
 class ASEBulk(BaseNode):
+    """
+    """
     bl_idname = 'ASEBulk'
     dtype = 'ASEBulk'
     bl_label = "Bulk"
