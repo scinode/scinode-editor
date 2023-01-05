@@ -22,20 +22,20 @@ def test_bulk():
     bulk1.inputs["name"].default_value = "Al"
     bulk1.inputs["cubic"].default_value = True
     nt.launch()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     results = bulk1.get_results()
     assert len(results[0]["value"]) == 4
     assert results[1]["value"] == ["Al"]*4
 
-def test_ch4():
+def test_molecule():
     """A nodetree for molecule."""
-    nt = bpy.data.node_groups.new(name='test_ch4', type='ScinodeTree')
+    nt = bpy.data.node_groups.new(name='test_molecule', type='ScinodeTree')
     mol1 = nt.nodes.new(type='ASEMolecule')
     mol1.inputs["formula"].default_value = "CH4"
     mol1.inputs["vacuum"].default_value = 5.0
     nt.launch()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     results = mol1.get_results()
     assert len(results[0]["value"]) == 5
@@ -51,7 +51,7 @@ def test_fcc111():
     surf1.inputs["size"].default_value = [1, 1, 4]
     surf1.inputs["vacuum"].default_value = 5.0
     nt.launch()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     results = surf1.get_results()
     assert len(results[0]["value"]) == 4
@@ -63,7 +63,7 @@ def test_fcc111():
     surf1.inputs["size"].default_value = [2, 2, 4]
     surf1.inputs["vacuum"].default_value = 10.0
     nt.launch()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     results = surf1.get_results()
     assert len(results[0]["value"]) == 16
