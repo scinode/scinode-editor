@@ -55,8 +55,7 @@ jobs:
           mongodb-port: 27017
       - name: Setup config
         run: |
-          rm /var/lib/mongodb/mongod.lock
-          service mongodb start
+          service mongod restart
           scinode config setup --file tests/datas/config.json
           scinode config show
       - name: Setup and start daemon
