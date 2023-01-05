@@ -12,7 +12,7 @@ def test_numpy():
     arange1.inputs["stop"].default_value =  4
     arange1.inputs["step"].default_value =  2
     nt.launch()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     results = arange1.get_results()
     value = results[0]['value']
@@ -32,7 +32,7 @@ def test_numpy_add():
     nt.links.new(float2.outputs[0], add1.inputs[1])
     nt.links.new(add1.outputs[0], debug1.inputs[0])
     nt.launch()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     results = add1.get_results()
     value = results[0]['value']

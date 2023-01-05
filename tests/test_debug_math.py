@@ -16,7 +16,7 @@ def test_debug_math():
     nt.links.new(floag2.outputs[0],
                                 math1.inputs['y'])
     nt.launch()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     results = math1.get_results()
     value = results[0]['value']

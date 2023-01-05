@@ -4,7 +4,6 @@ name: Test scinode editor blender plugin
 on: [push]
 
 env:
-  TEST_IMAGE_NAME: ghcr.io/beautiful-atoms/beautiful-atoms
   scinode_db_address: ${{ secrets.SCINODE_DB_ADDRESS }}
   scinode_db_name: scinode_db
   scinode_computer: test

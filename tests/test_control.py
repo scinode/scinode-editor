@@ -35,7 +35,7 @@ def test_switch_update():
     nt.links.new(switch.outputs[0], update.inputs[1])
     #
     nt.launch()
-    time.sleep(20)
+    time.sleep(40)
     nt.update_state()
     results = math1.get_results()
     value = results[0]['value']

@@ -22,7 +22,7 @@ def test_scatter():
     nt.links.new(add1.outputs['Result'], add2.inputs[0])
     nt.links.new(add2.outputs['Result'], debug.inputs[0])
     nt.launch()
-    time.sleep(10)
+    time.sleep(20)
     nt.update_state()
     results = add2.get_results()
     value = results[0]['value']

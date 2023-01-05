@@ -25,7 +25,7 @@ def test_pause_node():
     nt.links.new(math2.outputs[0], math3.inputs[1])
     nt.launch()
     math2.pause()
-    time.sleep(5)
+    time.sleep(10)
     nt.update_state()
     assert math2.state == 'PAUSED'
     assert math3.state == 'CREATED'

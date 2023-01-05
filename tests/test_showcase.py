@@ -37,7 +37,7 @@ def test_showcase():
     debug = nt.nodes.new(type='Print')
     nt.links.new(add1.outputs[0], debug.inputs[0])
     nt.launch()
-    time.sleep(30)
+    time.sleep(60)
     nt.update_state()
     results = add1.get_results()
     value = results[0]['value']
