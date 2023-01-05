@@ -20,7 +20,7 @@ jobs:
       # env is not
       image: ghcr.io/beautiful-atoms/beautiful-atoms:blender${{ matrix.blender-version }}
       # Will need pytest installation
-      # options: --user root
+      options: --user root
 
     steps:
       - uses: actions/checkout@v2
@@ -47,12 +47,12 @@ jobs:
         run: |
           $BLENDERPY -m pip install pytest==6.2.5 pytest-blender
           # $BLENDERPY -m pip install git+https://github.com/scinode/scinode.git@develop
-      - name: Create mongo Docker container
-        id: build_mongo_docker
-        uses: DigiPie/mongo-action@v1.0.1
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.8.0
         with:
-          image-version: latest
-          port: 27017
+          mongodb-version: '5.0'
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
       - name: Setup config
         run: |
           scinode config setup --file tests/datas/config.json
