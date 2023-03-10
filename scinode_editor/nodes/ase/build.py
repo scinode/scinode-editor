@@ -17,7 +17,7 @@ class ASEAtoms(BaseNode):
         symbols = self.inputs.new("ScinodeSocketString", "symbols")
         symbols.default_value = 'H'
         self.inputs.new("ScinodeSocketGeneral", "positions")
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.outputs.new("ScinodeSocketGeneral", "Elements")
         self.outputs.new("ScinodeSocketGeneral", "Species")
         self.outputs.new("ScinodeSocketGeneral", "Positions")
@@ -58,7 +58,7 @@ class ASEBulk(BaseNode):
         self.inputs.new("ScinodeSocketBool", "cubic")
         self.args = "name"
         self.kwargs = "crystalstructure, a, b, c, alpha, orthorhombic, cubic"
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.outputs.new("ScinodeSocketGeneral", "Elements")
         self.outputs.new("ScinodeSocketGeneral", "Species")
         self.outputs.new("ScinodeSocketGeneral", "Positions")
@@ -86,7 +86,7 @@ class ASEMolecule(BaseNode):
         self.inputs.new("ScinodeSocketFloat", "vacuum")
         self.args = "formula"
         self.kwargs = "vacuum"
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.outputs.new("ScinodeSocketGeneral", "Elements")
         self.outputs.new("ScinodeSocketGeneral", "Species")
         self.outputs.new("ScinodeSocketGeneral", "Positions")
@@ -162,7 +162,7 @@ class ASESurface(BaseNode):
             periodic.default_value = True
             self.args = "symbol"
             self.kwargs = "function, size, a, c, vacuum, orthogonal, periodic"
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.outputs.new("ScinodeSocketGeneral", "Elements")
         self.outputs.new("ScinodeSocketGeneral", "Species")
         self.outputs.new("ScinodeSocketGeneral", "Positions")

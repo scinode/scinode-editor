@@ -2,6 +2,7 @@
 from . import (
     general_socket,
     special_socket,
+    ase_socket,
 )
 
 classes = (
@@ -14,6 +15,7 @@ classes = (
     general_socket.ScinodeSocketIntVector3D,
     general_socket.ScinodeSocketFloatMatrix3D,
     special_socket.ScinodeSocketJoin,
+    ase_socket.ScinodeSocketAtoms,
 )
 
 

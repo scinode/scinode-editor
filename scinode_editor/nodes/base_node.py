@@ -1,4 +1,5 @@
 import bpy
+from uuid import uuid1
 import logging
 logger = logging.getLogger(__name__)
 logger.setLevel('DEBUG')
@@ -23,6 +24,9 @@ class ScinodeTreeNode():
                                    default=0)
     nodetree_uuid: bpy.props.StringProperty(name="nodetree_uuid", default="")
     platform: bpy.props.StringProperty(name="platform", default="Blender")
+    scatter_node: bpy.props.StringProperty(name="scatter_node",
+                                             description="uuid of the scatter node",
+                                             default="")
     scattered_from: bpy.props.StringProperty(name="scattered_from",
                                              description="uuid of the node this node copied from",
                                              default="")
@@ -68,9 +72,11 @@ class ScinodeTreeNode():
         This will be called when execute nodetree
         """
         from scinode.version import __version__
-        from uuid import uuid1
 
         logger.debug("save_to_db: {}".format(self.name))
+
+        self.pre_save()
+
         if self.uuid == '':
             self.uuid = str(uuid1())
         if short:
@@ -81,12 +87,11 @@ class ScinodeTreeNode():
                 "uuid": self.uuid,
             }
         else:
-            meta = self.meta_to_dict()
+            metadata = self.get_metadata()
             properties = self.properties_to_dict()
             input_sockets = self.input_sockets_to_dict()
             output_sockets = self.output_sockets_to_dict()
             executor = self.executor_to_dict()
-            results = self.init_results()
 
             data = {
                 "version": "scinode@{}".format(__version__),
@@ -96,12 +101,11 @@ class ScinodeTreeNode():
                 "state": self.state,
                 "action": self.action,
                 "error": "",
-                "meta": meta,
+                "metadata": metadata,
                 "properties": properties,
                 "inputs": input_sockets,
                 "outputs": output_sockets,
                 "executor": executor,
-                "results": results,
                 "position": [0, 0],
                 "description": self.description,
                 "log": self.log,
@@ -109,13 +113,14 @@ class ScinodeTreeNode():
 
         return data
 
-    def meta_to_dict(self):
-        """save meta data"""
-        meta = {
+    def get_metadata(self):
+        """save metadata data"""
+        metadata = {
             "node_type": self.node_type,
             "identifier": self.bl_idname,
             "nodetree_uuid": self.id_data.uuid,
             "platform": self.platform,
+            "scatter_node": self.scatter_node,
             "scattered_from": self.scattered_from,
             "scattered_label": self.scattered_label,
             "counter": self.counter,
@@ -123,10 +128,10 @@ class ScinodeTreeNode():
             "kwargs": [x for x in self.kwargs.replace(' ', '').split(",") if x!= ''],
         }
         if self.daemon_name == "":
-            meta.update({"daemon_name": self.id_data.daemon_name})
+            metadata.update({"daemon_name": self.id_data.daemon_name})
         else:
-            meta.update({"daemon_name": self.daemon_name})
-        return meta
+            metadata.update({"daemon_name": self.daemon_name})
+        return metadata
 
     def properties_to_dict(self):
         """save data used for calculation."""
@@ -137,6 +142,14 @@ class ScinodeTreeNode():
                 "value": type_bl_to_python(getattr(self, p)),
                 "name": p,
                 # "type": p.data_type,
+                "serialize": {
+                    "path": "scinode.serialization.built_in",
+                    "name": "serialize_pickle",
+                },
+                "deserialize": {
+                    "path": "scinode.serialization.built_in",
+                    "name": "deserialize_pickle",
+                },
             }
         # default value of sockets
         for input in self.inputs:
@@ -144,6 +157,8 @@ class ScinodeTreeNode():
                 "value": input.get_default_value(),
                 "name": input.name,
                 # "type": p.data_type,
+                "serialize": input.get_serialize(),
+                "deserialize": input.get_deserialize(),
             }
         return properties
 
@@ -170,17 +185,6 @@ class ScinodeTreeNode():
             executor["type"] = "function"
         return executor
 
-    def init_results(self):
-        #
-        if not hasattr(self, "results") or len(self.results) != len(self.outputs):
-            results = ()
-            for output in self.outputs:
-                results += ({"name": output.name, "value": output.default_value},)
-            return results
-        else:
-            return getattr(self, "results")
-
-
     def get_dbdata(self, query, fliter={}):
         from scinode.database.db import scinodedb
         data = scinodedb["node"].find_one(
@@ -191,12 +195,10 @@ class ScinodeTreeNode():
     def update_state(self):
         # print("update node: {}".format(self.name))
         query = {"uuid": self.uuid}
-        fliter = {"state": 1, "action": 1, "results": 1, "meta.counter": 1}
+        fliter = {"state": 1, "action": 1, "metadata.counter": 1}
         data = self.get_dbdata(query, fliter)
         if data is not None:
-            self.state = data["state"]
-            self.action = data["action"]
-            self.counter = data["meta"]["counter"]
+            self.counter = data["metadata"]["counter"]
         else:
             self.state = "CREATED"
         self.update_item_color()
@@ -223,11 +225,15 @@ class ScinodeTreeNode():
             dict: _description_
         """
         from scinode.database.db import scinodedb
-        import pickle
-
-        query = {"uuid": self.uuid}
-        data = scinodedb["node"].find_one(query, {"results": 1})
-        results = pickle.loads(data["results"])
+        from scinode.utils.node import deserialize_item
+        results = []
+        for output in self.outputs:
+            query = {"uuid": output.uuid}
+            data = scinodedb["data"].find_one(query, {"_id": 0})
+            if data:
+                results += [deserialize_item(data)]
+            else:
+                results += [data]
         return results
 
     def pre_load(self, ndata):
@@ -242,7 +248,7 @@ class ScinodeTreeNode():
         """Load Node data from database.
         """
         from scinode.database.db import scinodedb
-        import pickle
+        from scinode.utils.node import deserialize
         from scinode_editor.utils import type_python_to_bl
         if uuid is None:
             uuid = self.uuid
@@ -252,8 +258,8 @@ class ScinodeTreeNode():
         for key in ['identifier',  'node_type', 'nodetree_uuid', 'scattered_from',
                     'scattered_label', 'counter',
                     'platform']:
-            setattr(self, key, ndata["meta"][key])
-        properties = pickle.loads(ndata['properties'])
+            setattr(self, key, ndata["metadata"][key])
+        properties = deserialize(ndata['properties'])
         # set properties
         print("properties: ", properties)
         print("Set properties: ")
@@ -306,7 +312,7 @@ class ScinodeTreeNode():
         from scinode.database.db import scinodedb
         query = {"uuid": self.uuid}
         dbdata = scinodedb["node"].find_one(
-            query, {"_id": 0, "results": 0}
+            query, {"_id": 0}
         )
         paramters = get_input_parameters_from_db(dbdata)
         return paramters
@@ -342,26 +348,32 @@ def sockets_as_dbdata(sockets):
     """Save sockets to dbdata
     """
     # save all relations using links
-    from scinode_editor.utils import type_bl_to_python
     dbdata = []
     for socket in sockets:
+        if socket.uuid == '':
+            socket.uuid = str(uuid1())
         data = {
             'name': socket.name,
             'link_limit': socket.link_limit,
             # 'value': socket.get_default_value(),
+            "uuid": socket.uuid,
+            "node_uuid": socket.node.uuid,
+            "identifier": socket.bl_idname,
             "links": [],
+            "serialize": socket.get_serialize(),
+            "deserialize": socket.get_deserialize(),
         }
         logger.debug("Save socket to db: {}".format(socket.name))
         for link in socket.links:
             # we only handle one sockek one link yet.
             # for output socket, this is not a problem.
             data["links"].append({
-                'from_node_uuid': link.from_node.uuid,
                 'from_node': link.from_node.name,
                 'from_socket': link.from_socket.name,
-                'to_node_uuid': link.to_node.uuid,
+                'from_socket_uuid': link.from_socket.uuid,
                 'to_node': link.to_node.name,
                 'to_socket': link.to_socket.name,
+                'to_socket_uuid': link.to_socket.uuid,
                 'value': None,
                 'index': link.from_node.outputs.find(link.from_socket.name),
             }

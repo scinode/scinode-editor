@@ -10,7 +10,7 @@ def build_nodetree(ntdata, db):
     nt = bpy.data.node_groups.new(name=ntdata["name"], type="ScinodeTree")
     # asgin the uuid from database
     nt.uuid = ntdata["uuid"]
-    nt.daemon_name = ntdata["meta"]["daemon_name"]
+    nt.daemon_name = ntdata["metadata"]["daemon_name"]
     nodes = {}
     for name, ndata in ntdata["nodes"].items():
         print(

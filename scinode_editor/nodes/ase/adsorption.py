@@ -36,7 +36,7 @@ class ASEAdsorption(BaseNode):
             self.kwargs = "Method, Height, Index"
         height = self.inputs.new("ScinodeSocketFloat", "Height")
         height.default_value = 2.0
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.args = "Substrate, Adsorbate, Attach_atom"
 
 

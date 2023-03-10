@@ -1,5 +1,6 @@
 {
 "name": "localhost",
+"broker": false,
 "workdir": "/home/",
 "computer": "thinkpad",
 "sleep": 1

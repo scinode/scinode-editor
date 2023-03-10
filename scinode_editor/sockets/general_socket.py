@@ -1,5 +1,6 @@
 import bpy
 from bpy.types import NodeSocket
+from scinode.serialization.built_in import SerializeNone, SerializePickle
 import numpy as np
 
 
@@ -13,6 +14,7 @@ class ScinodeSocket(NodeSocket):
         description="float value",
         default=0.0,
     )
+    uuid: bpy.props.StringProperty(name="uuid", default="")
 
     def draw(self, context, layout, node, text):
         if self.is_output or self.is_linked:
@@ -29,7 +31,7 @@ class ScinodeSocket(NodeSocket):
     def set_default_value(self, value):
         self.default_value = value
 
-class ScinodeSocketGeneral(ScinodeSocket):
+class ScinodeSocketGeneral(ScinodeSocket, SerializePickle):
     '''Scinode socket General type'''
     bl_idname = 'ScinodeSocketGeneral'
     bl_label = "Scinode Socket General"
@@ -44,7 +46,7 @@ class ScinodeSocketGeneral(ScinodeSocket):
     def set_default_value(self, value):
         pass
 
-class ScinodeSocketFloat(ScinodeSocket):
+class ScinodeSocketFloat(ScinodeSocket, SerializeNone):
     bl_idname = 'ScinodeSocketFloat'
     bl_label = "Scinode Socket Float"
 
@@ -55,7 +57,7 @@ class ScinodeSocketFloat(ScinodeSocket):
     )
 
 
-class ScinodeSocketInt(ScinodeSocket):
+class ScinodeSocketInt(ScinodeSocket, SerializeNone):
     bl_idname = 'ScinodeSocketInt'
     bl_label = "Scinode Socket Integer"
 
@@ -66,7 +68,7 @@ class ScinodeSocketInt(ScinodeSocket):
     )
 
 
-class ScinodeSocketString(ScinodeSocket):
+class ScinodeSocketString(ScinodeSocket, SerializeNone):
     bl_idname = 'ScinodeSocketString'
     bl_label = "Scinode Socket String"
 
@@ -77,7 +79,7 @@ class ScinodeSocketString(ScinodeSocket):
     )
 
 
-class ScinodeSocketBool(ScinodeSocket):
+class ScinodeSocketBool(ScinodeSocket, SerializeNone):
     bl_idname = 'ScinodeSocketBool'
     bl_label = "Scinode Socket Bool"
 
@@ -89,7 +91,7 @@ class ScinodeSocketBool(ScinodeSocket):
 
 
 
-class ScinodeSocketFloatVector3D(ScinodeSocket):
+class ScinodeSocketFloatVector3D(ScinodeSocket, SerializePickle):
     bl_idname = 'ScinodeSocketFloatVector3D'
     bl_label = "Scinode Socket Vector"
 
@@ -103,7 +105,7 @@ class ScinodeSocketFloatVector3D(ScinodeSocket):
     def get_default_value(self):
         return np.array(self.default_value)
 
-class ScinodeSocketIntVector3D(ScinodeSocket):
+class ScinodeSocketIntVector3D(ScinodeSocket, SerializePickle):
     bl_idname = 'ScinodeSocketIntVector3D'
     bl_label = "Scinode Socket Vector"
 
@@ -118,7 +120,7 @@ class ScinodeSocketIntVector3D(ScinodeSocket):
         return np.array(self.default_value)
 
 
-class ScinodeSocketFloatMatrix3D(ScinodeSocket):
+class ScinodeSocketFloatMatrix3D(ScinodeSocket, SerializePickle):
     bl_idname = 'ScinodeSocketFloatMatrix3D'
     bl_label = "Scinode Socket Matrix"
 

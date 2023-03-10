@@ -73,7 +73,7 @@ class BlenderView:
         """
         from .build_nodetree import build_nodetree
 
-        if ntdata["meta"]["platform"].upper() == "BLENDER":
+        if ntdata["metadata"]["platform"].upper() == "BLENDER":
             nt = build_nodetree(ntdata, self.db)
             self.nt = nt
         else:

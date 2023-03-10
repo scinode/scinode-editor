@@ -42,22 +42,21 @@ class ScinodeTree(bpy.types.NodeTree):
     platform: bpy.props.StringProperty(name="platform", default="Blender")
     description: bpy.props.StringProperty(name="uuid", default="")
     log: bpy.props.StringProperty(name="uuid", default="")
+    scatter_node: bpy.props.StringProperty(name="scatter_node",
+                                             description="uuid of the scatter node",
+                                             default="")
     #
     auto_udpate_state: bpy.props.BoolProperty(default = False, name = "auto_udpate_state",
         description = "Enable auto update state for this node tree")
 
     def launch(self, daemon_name=None):
         """Launch the nodetree."""
-        from scinode.engine.nodetree_launch import LaunchNodeTree
-
+        from scinode.engine.send_to_queue import launch_nodetree
         logger.info("Launch NodeTree: {}".format(self.name))
         if daemon_name is not None:
             self.daemon_name = daemon_name
-        self.state = "CREATED"
-        self.action = "LAUNCH"
-        ntdata = self.to_dict()
-        lnt = LaunchNodeTree(ntdata)
-        lnt.launch()
+        self.save_to_db()
+        launch_nodetree(self.daemon_name, self.uuid)
         self.update_state()
 
     def save_to_db(self):
@@ -67,6 +66,8 @@ class ScinodeTree(bpy.types.NodeTree):
         logger.debug("save_to_db: {}".format(self.name))
         self.state = "CREATED"
         ntdata = self.to_dict()
+        # print("links: ", ntdata["links"])
+        # print("nodes: ", ntdata["nodes"])
         lnt = LaunchNodeTree(ntdata)
         lnt.save()
         self.update_state()
@@ -80,9 +81,10 @@ class ScinodeTree(bpy.types.NodeTree):
         from scinode.version import __version__
         from uuid import uuid1
 
+        # update uuid for nodetree, nodes, sockets
         if self.uuid == '':
             self.uuid = str(uuid1())
-        meta = self.meta_to_dict()
+        metadata = self.get_metadata()
         nodes = self.nodes_to_dict(short=short)
         links = self.links_to_dict()
         data = {
@@ -92,7 +94,7 @@ class ScinodeTree(bpy.types.NodeTree):
             "state": self.state,
             "action": self.action,
             "error": "",
-            "meta": meta,
+            "metadata": metadata,
             "nodes": nodes,
             "links": links,
             "description": self.description,
@@ -100,15 +102,16 @@ class ScinodeTree(bpy.types.NodeTree):
         }
         return data
 
-    def meta_to_dict(self):
+    def get_metadata(self):
         """Export metadata to a dict."""
-        meta = {
+        metadata = {
             "identifier": self.bl_idname,
             "daemon_name": self.daemon_name,
             "parent": self.parent,
             "platform": self.platform,
+            "scatter_node": self.scatter_node,
         }
-        return meta
+        return metadata
 
 
     def __repr__(self) -> str:
@@ -119,8 +122,18 @@ class ScinodeTree(bpy.types.NodeTree):
     def nodes_to_dict(self, short=False):
         """Export nodes to a dict."""
         # save all relations using links
+        from uuid import uuid1
         nodes = {}
         for node in self.nodes:
+            node.name = node.name.replace(".", "_")
+            if node.uuid == '':
+                node.uuid = str(uuid1())
+            # add uuid for socket
+            for output in node.outputs:
+                if output.uuid == '':
+                    output.uuid = str(uuid1())
+        for node in self.nodes:
+            node.name = node.name.replace(".", "_")
             if short:
                 nodes[node.name] = node.to_dict(short=short)
             else:
@@ -135,11 +148,9 @@ class ScinodeTree(bpy.types.NodeTree):
         for link in self.links:
             dbdata.append({
                 "from_socket": link.from_socket.name,
-                "from_node_uuid": link.from_node.uuid,
-                "from_node": link.from_node.name,
+                "from_node": link.from_node.name.replace(".", "_"),
                 "to_socket": link.to_socket.name,
-                "to_node_uuid": link.to_node.uuid,
-                "to_node": link.to_node.name,
+                "to_node": link.to_node.name.replace(".", "_"),
             }
             )
         return dbdata
@@ -157,13 +168,15 @@ class ScinodeTree(bpy.types.NodeTree):
         from scinode.database.db import scinodedb
 
         query = {"uuid": self.uuid}
-        data = scinodedb["nodetree"].find_one(query, {"state": 1, "action": 1})
+        data = scinodedb["nodetree"].find_one(query, {"state": 1, "action": 1, "nodes": 1})
         if data is not None:
             self.state = data["state"]
             self.action = data["action"]
+            for node in self.nodes:
+                node.state = data["nodes"][node.name]["state"]
+                node.update_item_color()
         else:
             self.state = "CREATED"
-        self.update_node_state()
 
     def update_node_state(self):
         """Update node state.

@@ -12,7 +12,7 @@ class ASEFixAtoms(BaseNode):
         self.kwargs = "Index"
         self.inputs.new("ScinodeSocketGeneral", "Atoms")
         self.inputs.new("ScinodeSocketInt", "Index")
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
 
     def get_executor(self):
         return {

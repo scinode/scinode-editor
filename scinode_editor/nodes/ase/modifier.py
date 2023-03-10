@@ -17,7 +17,7 @@ class ASECellTransformatoin(BaseNode):
         mat.i = [1, 0, 0]
         mat.j = [0, 1, 0]
         mat.k = [0, 0, 1]
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.args = "prim, P"
         self.kwargs = "wrap, tol"
 
@@ -46,7 +46,7 @@ class ASEReplaceAtoms(BaseNode):
         self.inputs.new("ScinodeSocketGeneral", "Atoms")
         self.inputs.new("ScinodeSocketInt", "Index")
         self.inputs.new("ScinodeSocketString", "Value")
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.args = "Atoms, Index, Value"
         self.kwargs = ""
 
@@ -72,7 +72,7 @@ class ASEDeleteAtoms(BaseNode):
     def init(self, context):
         self.inputs.new("ScinodeSocketGeneral", "Atoms")
         self.inputs.new("ScinodeSocketInt", "Index")
-        self.outputs.new("ScinodeSocketGeneral", "Atoms")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.args = "Atoms, Index"
         self.kwargs = ""
 

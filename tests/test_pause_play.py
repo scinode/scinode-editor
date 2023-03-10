@@ -3,7 +3,6 @@ import bpy
 
 def test_pause_node():
     import time
-    import os
     import numpy as np
     nt = bpy.data.node_groups.new(name='test_pause_node', type='ScinodeTree')
     float1 = nt.nodes.new(type='TestFloat')

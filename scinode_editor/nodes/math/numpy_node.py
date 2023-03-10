@@ -362,7 +362,7 @@ class Numpy(bpy.types.Node, ScinodeTreeNode):
         else:
             self.inputs.new("ScinodeSocketFloat", "x")
             self.args = "x"
-        self.outputs.new("ScinodeSocketFloat", "Result")
+        self.outputs.new("ScinodeSocketGeneral", "Result")
 
     def draw_buttons(self, context, layout):
         layout.prop(self, "function", text="")

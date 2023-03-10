@@ -2,6 +2,27 @@ import bpy
 from bpy.types import (
     NodeSocket,
 )
+from scinode_editor.sockets.general_socket import ScinodeSocket
+from scinode_ase.serialization.atoms import SerializeAtoms
+
+class ScinodeSocketAtoms(ScinodeSocket, SerializeAtoms):
+    '''Scinode socket Atoms type'''
+    bl_idname = 'ASEAtoms'
+    bl_label = "Scinode Socket Calculator"
+
+    default_value: bpy.props.StringProperty(
+        name="Value",
+        description="string value",
+        default='',
+    )
+
+    argument_type = 'kwargs'
+
+    def draw(self, context, layout, node, text):
+        layout.label(text=text)
+
+    def draw_color(self, context, node):
+        return (0.4, 0.4, 1, 0.5)
 
 
 class ScinodeSocketCalculator(NodeSocket):

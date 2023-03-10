@@ -39,7 +39,7 @@ class Batoms(BaseNode):
                 "type": "class",
                 }
 
-    def init_results(self):
+    def pre_save(self):
         """Load Batoms into database."""
         from batoms import Batoms
         batoms = Batoms(self.batoms)
