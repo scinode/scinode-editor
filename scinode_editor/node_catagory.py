@@ -10,11 +10,11 @@ class ScinodeCategory(NodeCategory):
 node_categories = [
     # identifier, label, items list
     ScinodeCategory('Input', "Input", items=[
-        NodeItem("ScinodeInteger", label="Integer", settings={}),
-        NodeItem("ScinodeFloat", label="Float", settings={}),
-        NodeItem("ScinodeString", label="String", settings={}),
-        NodeItem("ScinodeBool", label="Bool", settings={}),
-        NodeItem("ScinodeBatoms", label="Batoms", settings={}),
+        NodeItem("Integer", label="Integer", settings={}),
+        NodeItem("Float", label="Float", settings={}),
+        NodeItem("String", label="String", settings={}),
+        NodeItem("Bool", label="Bool", settings={}),
+        NodeItem("Batoms", label="Batoms", settings={}),
     ]),
     ScinodeCategory('ASE', "ASE", items=[
         NodeItem("ASEAtoms", label="Atoms", settings={}),

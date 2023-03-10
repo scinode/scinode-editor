@@ -19,9 +19,8 @@ class BlenderView:
         import bpy
 
         query = {"index": index}
-        ntdata = self.db["nodetree"].find_one(query)
         # build nodetree
-        self.build_nodetree_from_db(ntdata)
+        self.build_nodetree_from_db(query)
         # change view to node editor
         area = bpy.context.screen.areas[0]
         area.type = "NODE_EDITOR"
@@ -65,16 +64,13 @@ class BlenderView:
         ndata = self.db["node"].find_one(query)
         return ndata
 
-    def build_nodetree_from_db(self, ntdata):
+    def build_nodetree_from_db(self, query):
         """Recreate the nodetree from database
-
-        Args:
-            ntdata (dict): data of the nodetree
         """
-        from .build_nodetree import build_nodetree
-
+        from scinode_editor.node_tree import ScinodeTree
+        ntdata = self.db["nodetree"].find_one(query, {"uuid": 1, "metadata.platform":1})
         if ntdata["metadata"]["platform"].upper() == "BLENDER":
-            nt = build_nodetree(ntdata, self.db)
+            nt = ScinodeTree.load_from_db(ntdata["uuid"])
             self.nt = nt
         else:
             raise Exception("This nodetree is not created by Blender")

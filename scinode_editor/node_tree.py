@@ -137,7 +137,7 @@ class ScinodeTree(bpy.types.NodeTree):
             if short:
                 nodes[node.name] = node.to_dict(short=short)
             else:
-                nodes[node.name] = node.to_dict()
+                nodes[node.name] = node.to_dict(daemon_name=self.daemon_name)
         return nodes
 
 
@@ -183,3 +183,46 @@ class ScinodeTree(bpy.types.NodeTree):
         """
         for node in self.nodes:
             node.update_state()
+
+    @classmethod
+    def load_from_db(cls, uuid):
+        """Load Node data from database.
+        """
+        from scinode.utils.nodetree import get_nt_full_data
+        ntdata = get_nt_full_data({"uuid": uuid})
+        nt = cls.from_dict(ntdata)
+        return nt
+
+    @classmethod
+    def from_dict(cls, ntdata):
+        """Rebuild nodetree from dict ntdata.
+
+        Args:
+            ntdata (dict): data of the nodetree.
+
+        Returns:
+            Nodedtree: a nodetree
+        """
+        from scinode_editor.nodes.base_node import BaseNode
+        # new nodetree with type ScinodeTree
+        nt = bpy.data.node_groups.new(name=ntdata["name"], type="ScinodeTree")
+        # asgin the uuid from database
+        nt.uuid = ntdata["uuid"]
+        nt.daemon_name = ntdata["metadata"]["daemon_name"]
+        nodes = {}
+        for name, ndata in ntdata["nodes"].items():
+            print(
+                f"Node name: {name}, identifier: {ndata['metadata']['identifier']}"
+            )
+            # new node with nodetype
+            node = BaseNode.build_node(nt, ndata, name=name)
+            nodes[name] = node
+        # re-build links
+        for link in ntdata["links"]:
+            # check if link exist
+            if link["from_node"] in nodes and link["to_node"] in nodes:
+                nt.links.new(
+                    nodes[link["from_node"]].outputs[link["from_socket"]],
+                    nodes[link["to_node"]].inputs[link["to_socket"]],
+                )
+        return nt

@@ -49,6 +49,28 @@ class TestAdd(BaseNode):
                 "name": "test_add",
                 }
 
+class TestSqrt(BaseNode):
+    bl_idname = 'TestSqrt'
+    bl_label = "Sqrt Node"
+    bl_icon = "VIEW_ORTHO"
+
+    t: bpy.props.FloatProperty(name="t", default=0.0)
+
+    properties = ["t"]
+
+    def init(self, context):
+        self.inputs.new("ScinodeSocketFloat", "x")
+        self.outputs.new("ScinodeSocketFloat", "Result")
+        self.kwargs = "t, x"
+
+    def draw_buttons(self, context, layout):
+        layout.prop(self, "t", text="t")
+
+    def get_executor(self):
+        return {"path": "scinode.executors.test",
+                "name": "test_sqrt",
+                }
+
 class TestGreater(BaseNode):
     bl_idname = 'TestGreater'
     bl_label = "Greater Node"

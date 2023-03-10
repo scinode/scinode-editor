@@ -49,6 +49,7 @@ class ScinodeTreeNode():
 
     properties = []
 
+
     @classmethod
     def poll(cls, ntree):
         """A poll function to enable instantiation.
@@ -66,15 +67,28 @@ class ScinodeTreeNode():
         nt.reset_node(self.name)
         self.update_state()
 
-    def to_dict(self, short=False):
+    def pre_save(self):
+        """Pre action before save to database."""
+        if self.node_type.upper() == "GROUP":
+            self.init_nodetree_group()
+            self.ntg.daemon_name = self.daemon_name
+            self.ntg.save_to_db()
+
+    def expose(self):
+        """Expose group input and output sockets.
+        """
+        pass
+
+    def to_dict(self, short=False, daemon_name="localhost"):
         """Save all datas, include properties, input and output sockets.
 
         This will be called when execute nodetree
         """
         from scinode.version import __version__
 
-        logger.debug("save_to_db: {}".format(self.name))
-
+        logger.debug(f"save_to_db: {self.name}")
+        if not self.daemon_name:
+            self.daemon_name = daemon_name
         self.pre_save()
 
         if self.uuid == '':
@@ -126,6 +140,8 @@ class ScinodeTreeNode():
             "counter": self.counter,
             "args": [x for x in self.args.replace(' ', '').split(",") if x != ''],
             "kwargs": [x for x in self.kwargs.replace(' ', '').split(",") if x!= ''],
+            "group_inputs": self.group_inputs,
+            "group_outputs": self.group_outputs,
         }
         if self.daemon_name == "":
             metadata.update({"daemon_name": self.id_data.daemon_name})
@@ -177,7 +193,7 @@ class ScinodeTreeNode():
 
     def executor_to_dict(self):
         """Save run executor"""
-        executor = self.get_executor() or self.executor
+        executor = self.get_executor()
         if "name" not in executor:
             executor["name"] = executor["path"].split(".")[-1]
             executor["path"] = executor["path"][0 : -(len(executor["name"]) + 1)]
@@ -244,35 +260,6 @@ class ScinodeTreeNode():
         """
         pass
 
-    def load_data_from_db(self, uuid=None):
-        """Load Node data from database.
-        """
-        from scinode.database.db import scinodedb
-        from scinode.utils.node import deserialize
-        from scinode_editor.utils import type_python_to_bl
-        if uuid is None:
-            uuid = self.uuid
-        ndata = scinodedb["node"].find_one({"uuid": uuid})
-        self.pre_load(ndata)
-        self.name = ndata["name"]
-        for key in ['identifier',  'node_type', 'nodetree_uuid', 'scattered_from',
-                    'scattered_label', 'counter',
-                    'platform']:
-            setattr(self, key, ndata["metadata"][key])
-        properties = deserialize(ndata['properties'])
-        # set properties
-        print("properties: ", properties)
-        print("Set properties: ")
-        for name, p in properties.items():
-            value = type_python_to_bl(p['value'])
-            print(name, value, type(value))
-            setattr(self, name, value)
-        # set input sockets if the no link
-        print("Set input: ")
-        for input in self.inputs:
-            if input.name in properties:
-                input.set_default_value(type_python_to_bl(properties[input.name]['value']))
-
     def pause(self):
         from scinode.core.db_nodetree import DBNodeTree
         nt = DBNodeTree(uuid=self.id_data.uuid)
@@ -317,6 +304,121 @@ class ScinodeTreeNode():
         paramters = get_input_parameters_from_db(dbdata)
         return paramters
 
+    @classmethod
+    def load_from_db(cls, nodetree, uuid):
+        """Load Node data from database.
+        """
+        from scinode.database.db import scinodedb
+        ndata = scinodedb["node"].find_one({"uuid": uuid})
+        node = cls.build_node(nodetree, ndata)
+        return node
+
+    def update_from_dict(self, ndata):
+        """update node from dict.
+        """
+        from scinode_editor.utils import type_python_to_bl
+        for key in ['identifier',  'node_type', 'nodetree_uuid', 'scattered_from',
+                    'scattered_label', 'counter',
+                    'platform']:
+            if ndata.get(key):
+                setattr(self, key, ndata["metadata"][key])
+        properties = ndata['properties']
+        # set properties
+        for name, p in properties.items():
+            value = type_python_to_bl(p['value'])
+            setattr(self, name, value)
+        # set input sockets if the no link
+        for input in self.inputs:
+            if input.name in properties:
+                input.set_default_value(type_python_to_bl(properties[input.name]['value']))
+
+    @classmethod
+    def build_node(cls, nodetree, ndata, name=""):
+        """Build Scinode
+
+        Args:
+            nodetree (_type_): _description_
+            ndata (_type_): _description_
+            db (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        node = nodetree.nodes.new(type=ndata["metadata"]["identifier"])
+        # assgin name and uuid from database
+        node.name = name
+        for key in ["uuid", "state", "action", "description"]:
+            if ndata.get(key):
+                setattr(node, key, ndata.get(key))
+        # nodes[node.uuid] = node
+        # get node data from database
+        node.update_from_dict(ndata)
+        return node
+
+    def get_executor(self):
+        """"""
+        executor = None
+        if self.node_type.upper() == "GROUP":
+            executor = {
+                "path": "scinode.executors.built_in",
+                "name": "NodeGroup",
+                "type": "class",
+            }
+        return executor
+
+    def init_nodetree_group(self):
+        """init the nodetree group (ntg)"""
+        from scinode_editor.node_tree import ScinodeTree
+
+        ntdata = self.node_group()
+        ntdata["name"] = self.name
+        logger.debug(f"node uuid: {self.uuid}")
+        ntdata["uuid"] = self.uuid
+        ntdata["metadata"]["daemon_name"] = self.daemon_name
+        ntdata["metadata"]["parent_node"] = self.uuid
+        self.ntg = ScinodeTree.from_dict(ntdata)
+
+    def create_sockets(self):
+        """Create input and output sockets"""
+        self.inputs.clear()
+        self.outputs.clear()
+        if self.node_type.upper() == "GROUP":
+            self.create_group_sockets()
+
+    def create_group_sockets(self):
+        """Create input and output sockets based on group inputs
+        and outputs.
+
+        group_inputs = [
+            ["add1", "x", "x"],
+            ["add1", "y", "y"],
+        ]
+        """
+        for input in self.group_inputs:
+            node, socket, name = input
+            logger.debug(f"create input: {name}")
+            identifier = self.ntg.nodes[node].inputs[socket].bl_idname
+            self.inputs.new(identifier, name)
+        for output in self.group_outputs:
+            node, socket, name = output
+            logger.debug(f"create output: {name}")
+            identifier = self.ntg.nodes[node].outputs[socket].bl_idname
+            self.outputs.new(identifier, name)
+
+    @property
+    def group_inputs(self):
+        return self.get_group_inputs()
+
+    def get_group_inputs(self):
+        return []
+
+    @property
+    def group_outputs(self):
+        return self.get_group_outputs()
+
+    def get_group_outputs(self):
+        return []
+
 class BaseNode(bpy.types.Node, ScinodeTreeNode):
     bl_idname = 'BaseNode'
     bl_label = "ScinodeTree Base Node"
@@ -326,11 +428,8 @@ class BaseNode(bpy.types.Node, ScinodeTreeNode):
         pass
 
     def draw_buttons(self, context, layout):
-        for key, value in self.properties.items():
+        for key in self.properties:
             layout.prop(self, key, text="")
-
-    def get_executor(self):
-        return None
 
     def copy(self, node):
         print("Copying from node: ", node.name)

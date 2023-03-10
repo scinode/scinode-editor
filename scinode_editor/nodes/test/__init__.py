@@ -2,15 +2,18 @@
 
 from . import (
     test_node,
+    test_node_group,
 )
 
 
 classes = (
     test_node.TestFloat,
     test_node.TestAdd,
+    test_node.TestSqrt,
     test_node.TestGreater,
     test_node.TestLess,
     test_node.TestRange,
+    test_node_group.TestSqrtAdd,
 )
 
 
