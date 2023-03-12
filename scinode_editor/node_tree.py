@@ -39,6 +39,7 @@ class ScinodeTree(bpy.types.NodeTree):
     action: bpy.props.StringProperty(name="uuid", default="")
     daemon_name: bpy.props.StringProperty(name="daemon_name", default="localhost")
     parent: bpy.props.StringProperty(name="parent", default="")
+    parent_node: bpy.props.StringProperty(name="parent_node", default="")
     platform: bpy.props.StringProperty(name="platform", default="Blender")
     description: bpy.props.StringProperty(name="uuid", default="")
     log: bpy.props.StringProperty(name="uuid", default="")
@@ -107,6 +108,7 @@ class ScinodeTree(bpy.types.NodeTree):
         metadata = {
             "identifier": self.bl_idname,
             "daemon_name": self.daemon_name,
+            "parent_node": self.parent_node,
             "parent": self.parent,
             "platform": self.platform,
             "scatter_node": self.scatter_node,

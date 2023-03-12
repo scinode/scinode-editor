@@ -12,6 +12,9 @@ def test_node_group():
     floag2 = nt.nodes.new(type='TestFloat')
     floag2.Float = 9
     sqrt_add1 = nt.nodes.new(type='TestSqrtAdd')
+    sqrt_add1.t1 = 2
+    sqrt_add1.t2 = 3
+    assert len(sqrt_add1.properties) == 2
     assert len(sqrt_add1.inputs) == 2
     assert len(sqrt_add1.outputs) == 1
     nt.links.new(float1.outputs[0],

@@ -11,6 +11,7 @@ classes = (
     ops_nodetree.NodeTreeUpdateState,
     ops_nodetree.NodeTreeResetState,
     ops_nodetree.EXPORT_OT_Nodetree,
+    ops_node.NodeUpdateState,
     ops_node.NodeReset,
     ops_node.NodePause,
     ops_node.NodePlay,

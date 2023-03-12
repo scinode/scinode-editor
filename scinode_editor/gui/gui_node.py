@@ -37,6 +37,8 @@ class SCINODE_PT_NodePanel(ScinodeBasePanel):
             col.prop(node, 'daemon_name')
             col.prop(node, 'node_type')
             col.prop(node, 'uuid')
+            col.operator('scinode.node_update_state', text="Update state", icon = "FILE_REFRESH")
+            col.separator()
             col.operator('scinode.node_reset', text="Reset state", icon = "PLAY_REVERSE")
             col.operator('scinode.node_pause', text="Pause", icon = "PAUSE")
             col.operator('scinode.node_play', text="Play", icon = "PLAY")

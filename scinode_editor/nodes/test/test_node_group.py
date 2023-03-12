@@ -16,7 +16,15 @@ class TestSqrtAdd(BaseNode):
             self.uuid = str(uuid1())
         self.node_type = "GROUP"
         self.init_nodetree_group()
+        self.create_properties()
         self.create_sockets()
+
+    def get_group_properties(self):
+        group_properties = [
+            ["sqrt1", "t", "t1"],
+            ["add1", "t", "t2"],
+        ]
+        return group_properties
 
     def get_group_inputs(self):
         group_inputs = [
@@ -30,7 +38,7 @@ class TestSqrtAdd(BaseNode):
         return group_outputs
 
 
-    def node_group(self):
+    def get_node_group(self):
         ntdata = {
             "metadata": {
                 "platform": "scinode",

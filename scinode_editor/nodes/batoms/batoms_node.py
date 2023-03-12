@@ -25,7 +25,7 @@ class Batoms(BaseNode):
     properties = ["batoms"]
 
     def init(self, context):
-        self.outputs.new("ScinodeSocketGeneral", "Structure")
+        self.outputs.new("ASEAtoms", "Atoms")
         self.outputs.new("ScinodeSocketGeneral", "Elements")
         self.outputs.new("ScinodeSocketGeneral", "Species")
         self.outputs.new("ScinodeSocketGeneral", "Positions")
@@ -41,17 +41,23 @@ class Batoms(BaseNode):
 
     def pre_save(self):
         """Load Batoms into database."""
+        from scinode.database.client import scinodedb
+        from scinode.utils.db import replace_one
+        from scinode.utils.node import get_executor
         from batoms import Batoms
         batoms = Batoms(self.batoms)
         atoms = batoms.as_ase()
-        # check species
+        outputs = self.output_sockets_to_dict()
         species = atoms.arrays['species'] if "species" in atoms.arrays else atoms.get_chemical_symbols()
         results = ({"name": "Structure", "value": atoms},
                     {"name": "Elements", "value": atoms.get_chemical_symbols()},
                     {"name": "Species", "value": species},
                     {"name": "Positions", "value": atoms.positions},
         )
-        return results
+        for i in range(len(outputs)):
+            Executor, executor_type = get_executor(outputs[i]["serialize"])
+            outputs[i]["value"] = Executor(results[i]["value"])
+            replace_one(outputs[i], scinodedb["data"])
 
     def pre_load(self, ndata):
         """Load structure to Blender
@@ -59,11 +65,14 @@ class Batoms(BaseNode):
         Args:
             ndata (_type_): _description_
         """
-        import pickle
         from batoms import Batoms
-        results = pickle.loads(ndata["results"])
-        properties = pickle.loads(ndata["properties"])
-        atoms = results[0]['value']
+        from scinode.database.client import scinodedb
+        from scinode.utils.node import deserialize_item
+        result = scinodedb["data"].find_one({"uuid":ndata["outputs"][0]["uuid"]})
+        result = deserialize_item(result)
+        atoms = result['value']
+        print("result: ", result)
+        properties = ndata["properties"]
         if self.batoms not in bpy.data.objects:
             batoms = Batoms(label=properties["batoms"]["value"], from_ase=atoms)
 
@@ -81,7 +90,7 @@ class ViewBatoms(BaseNode):
     properties = []
 
     def init(self, context):
-        self.inputs.new("ScinodeSocketGeneral", "Structure")
+        self.inputs.new("ASEAtoms", "Atoms")
 
     def get_executor(self):
         return {"path": "scinode.executors.built_in",
@@ -93,15 +102,15 @@ class ViewBatoms(BaseNode):
         layout.prop(self, "label", text="label")
 
     def update_state(self):
-        """Update the debug text.
+        """Update the batoms in the 3DView.
         """
         from batoms import Batoms
         inputs = self.get_input_parameters_from_db()
         print(inputs)
-        atoms = inputs['Structure']['value']
+        atoms = inputs['Atoms']['value']
         if self.label in bpy.data.collections:
             bpy.ops.batoms.delete(label=self.label)
-        batoms = Batoms(label=self.label, from_ase=atoms)
+        Batoms(label=self.label, from_ase=atoms)
 
 
 

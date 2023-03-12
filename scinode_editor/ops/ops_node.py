@@ -12,6 +12,17 @@ class NodeOperatorBase(bpy.types.Operator):
                 return context.space_data.node_tree.nodes.active
         return False
 
+class NodeUpdateState(NodeOperatorBase):
+    bl_idname = "scinode.node_update_state"
+    bl_label = "Update state of Scinode Tree"
+    bl_description = "Update state of all nodes in the tree"
+
+    def execute(self, context):
+        node = context.space_data.node_tree.nodes.active
+        node.update_state()
+        self.report({"INFO"}, "Update state of node: {}".format(
+            repr(node.name)))
+        return {"FINISHED"}
 
 class NodeReset(NodeOperatorBase):
     bl_idname = "scinode.node_reset"

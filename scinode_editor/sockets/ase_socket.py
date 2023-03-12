@@ -10,12 +10,6 @@ class ScinodeSocketAtoms(ScinodeSocket, SerializeAtoms):
     bl_idname = 'ASEAtoms'
     bl_label = "Scinode Socket Calculator"
 
-    default_value: bpy.props.StringProperty(
-        name="Value",
-        description="string value",
-        default='',
-    )
-
     argument_type = 'kwargs'
 
     def draw(self, context, layout, node, text):
@@ -23,6 +17,15 @@ class ScinodeSocketAtoms(ScinodeSocket, SerializeAtoms):
 
     def draw_color(self, context, node):
         return (0.4, 0.4, 1, 0.5)
+
+    def get_default_value(self):
+        """Get default value."""
+        from ase.atoms import Atoms
+        return Atoms()
+
+    def set_default_value(self, value):
+        """Set default value."""
+        pass
 
 
 class ScinodeSocketCalculator(NodeSocket):

@@ -347,6 +347,7 @@ class ScinodeTreeNode():
         node = nodetree.nodes.new(type=ndata["metadata"]["identifier"])
         # assgin name and uuid from database
         node.name = name
+        node.pre_load(ndata)
         for key in ["uuid", "state", "action", "description"]:
             if ndata.get(key):
                 setattr(node, key, ndata.get(key))
@@ -370,13 +371,24 @@ class ScinodeTreeNode():
         """init the nodetree group (ntg)"""
         from scinode_editor.node_tree import ScinodeTree
 
-        ntdata = self.node_group()
+        ntdata = self.node_group
         ntdata["name"] = self.name
         logger.debug(f"node uuid: {self.uuid}")
         ntdata["uuid"] = self.uuid
         ntdata["metadata"]["daemon_name"] = self.daemon_name
         ntdata["metadata"]["parent_node"] = self.uuid
         self.ntg = ScinodeTree.from_dict(ntdata)
+
+    def create_properties(self):
+        self.properties.clear()
+        if self.node_type.upper() == "GROUP":
+            self.create_group_properties()
+
+    def create_group_properties(self):
+        for prop in self.group_properties:
+            node, prop_name, new_prop_name = prop
+            identifier = self.ntg.nodes[node].properties[prop_name].bl_idname
+            self.properties.new(identifier, new_prop_name)
 
     def create_sockets(self):
         """Create input and output sockets"""
@@ -406,6 +418,13 @@ class ScinodeTreeNode():
             self.outputs.new(identifier, name)
 
     @property
+    def group_properties(self):
+        return self.get_group_properties()
+
+    def get_group_properties(self):
+        return []
+
+    @property
     def group_inputs(self):
         return self.get_group_inputs()
 
@@ -418,6 +437,13 @@ class ScinodeTreeNode():
 
     def get_group_outputs(self):
         return []
+
+    @property
+    def node_group(self):
+        return self.get_node_group()
+
+    def get_node_group(self):
+        return {}
 
 class BaseNode(bpy.types.Node, ScinodeTreeNode):
     bl_idname = 'BaseNode'
