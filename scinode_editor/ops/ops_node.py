@@ -30,7 +30,7 @@ class NodeReset(NodeOperatorBase):
     bl_description = "Reset node"
 
     def execute(self, context):
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
         nt = DBNodeTree(uuid=node.id_data.uuid)
         nt.reset_node(node.name)
@@ -45,7 +45,7 @@ class NodePause(NodeOperatorBase):
     bl_description = "Pause node"
 
     def execute(self, context):
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
         nt = DBNodeTree(uuid=node.id_data.uuid)
         nt.pause_node(node.name)
@@ -60,7 +60,7 @@ class NodePlay(NodeOperatorBase):
     bl_description = "Play node"
 
     def execute(self, context):
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
         nt = DBNodeTree(uuid=node.id_data.uuid)
         nt.play_node(node.name)
@@ -75,7 +75,7 @@ class NodeCancel(NodeOperatorBase):
     bl_description = "Cancel node"
 
     def execute(self, context):
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         node = context.space_data.node_tree.nodes.active
         nt = DBNodeTree(uuid=node.id_data.uuid)
         nt.cancel_node(node.name)

@@ -53,20 +53,21 @@ node_categories = [
         NodeItem("Setattr", label="Setattr", settings={}),
         NodeItem("Getitem", label="Getitem", settings={}),
         NodeItem("Setitem", label="Setitem", settings={}),
+        NodeItem("Index", label="Index", settings={}),
         NodeItem("Input_to_Output", label="Input to Output", settings={}),
         NodeItem("ViewBatoms", label="ViewBatoms", settings={}),
         NodeItem("Print", label="Print", settings={}),
     ]),
     ScinodeCategory('Math', "Math", items=[
-        NodeItem("ScinodePythonMath", label="Math", settings={}),
-        NodeItem("ScinodeNumpy", label="Numpy", settings={}),
+        NodeItem("Math", label="Math", settings={}),
+        NodeItem("Numpy", label="Numpy", settings={}),
     ]),
     ScinodeCategory('Vector', "Vector", items=[
-        NodeItem("ScinodeVector3DMath", label="Vector3D", settings={}),
+        NodeItem("Vector3DMath", label="Vector3D", settings={}),
     ]),
     ScinodeCategory('Control', "Control", items=[
-        NodeItem("ScinodeScatter", label="Scatter", settings={}),
-        NodeItem("ScinodeSwitch", label="Switch", settings={}),
-        NodeItem("ScinodeUpdate", label="Update", settings={}),
+        NodeItem("Scatter", label="Scatter", settings={}),
+        NodeItem("Switch", label="Switch", settings={}),
+        NodeItem("Update", label="Update", settings={}),
     ]),
 ]

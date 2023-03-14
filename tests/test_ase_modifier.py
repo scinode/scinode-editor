@@ -24,6 +24,14 @@ def test_cell_transform():
     atoms1 = results[0]["value"]
     assert np.isclose(atoms1.cell[0][0], 8.1)
     assert len(atoms1) == 32
+    #
+    t1.inputs["P"].i =  [2, 0, 0]
+    t1.inputs["P"].j =  [0, 1, 0]
+    t1.inputs["P"].k =  [0, 0, 1]
+    nt.save_to_db()
+    time.sleep(5)
+    nt.update_state()
+    assert t1.state == "CREATED"
 
 
 def test_replace():

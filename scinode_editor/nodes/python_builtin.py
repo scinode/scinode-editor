@@ -91,11 +91,33 @@ class Setitem(bpy.types.Node, ScinodeTreeNode):
         }
 
 
+class Index(bpy.types.Node, ScinodeTreeNode):
+    bl_idname = "Index"
+    bl_label = "Index"
+
+
+    properties = []
+
+    def init(self, context):
+        self.kwargs = ""
+        self.args = "Source, Value"
+        self.inputs.new("ScinodeSocketGeneral", "Source")
+        self.inputs.new("ScinodeSocketInt", "Value")
+        self.outputs.new("ScinodeSocketGeneral", "Index")
+
+    def get_executor(self):
+        return {
+            "path": "scinode.executors.python",
+            "name": "index",
+            "type": "function",
+        }
+
 node_list = [
     Getattr,
     Setattr,
     Getitem,
     Setitem,
+    Index,
 ]
 
 def register_class():

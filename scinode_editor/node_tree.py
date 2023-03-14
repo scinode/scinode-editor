@@ -159,7 +159,7 @@ class ScinodeTree(bpy.types.NodeTree):
 
     def reset(self):
         """Reset all nodes."""
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         nt = DBNodeTree(uuid=self.uuid)
         nt.reset()
         self.update_state()

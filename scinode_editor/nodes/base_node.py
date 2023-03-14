@@ -62,7 +62,7 @@ class ScinodeTreeNode():
         will not affect its child nodes. One has to use reset node in the nodetree
         to reset its child nodes.
         """
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         nt = DBNodeTree(uuid=self.id_data.uuid)
         nt.reset_node(self.name)
         self.update_state()
@@ -261,13 +261,13 @@ class ScinodeTreeNode():
         pass
 
     def pause(self):
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         nt = DBNodeTree(uuid=self.id_data.uuid)
         nt.pause_node(self.name)
         self.update_state()
 
     def play(self):
-        from scinode.core.db_nodetree import DBNodeTree
+        from scinode.orm.db_nodetree import DBNodeTree
         nt = DBNodeTree(uuid=self.id_data.uuid)
         nt.play_node(self.name)
         self.update_state()
