@@ -1,0 +1,5 @@
+{
+    "db_name": "scinode_db",
+    "db_address": "mongodb://localhost:27017/",
+    "computer": "thinkpad"
+}
