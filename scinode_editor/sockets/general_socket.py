@@ -1,6 +1,6 @@
 import bpy
 from bpy.types import NodeSocket
-from scinode.serialization.built_in import SerializeNone, SerializePickle
+from scinode.serialization.built_in import SerializeJson, SerializePickle
 import numpy as np
 
 
@@ -46,7 +46,7 @@ class ScinodeSocketGeneral(ScinodeSocket, SerializePickle):
     def set_default_value(self, value):
         pass
 
-class ScinodeSocketFloat(ScinodeSocket, SerializeNone):
+class ScinodeSocketFloat(ScinodeSocket, SerializeJson):
     bl_idname = 'ScinodeSocketFloat'
     bl_label = "Scinode Socket Float"
 
@@ -57,7 +57,7 @@ class ScinodeSocketFloat(ScinodeSocket, SerializeNone):
     )
 
 
-class ScinodeSocketInt(ScinodeSocket, SerializeNone):
+class ScinodeSocketInt(ScinodeSocket, SerializeJson):
     bl_idname = 'ScinodeSocketInt'
     bl_label = "Scinode Socket Integer"
 
@@ -68,7 +68,7 @@ class ScinodeSocketInt(ScinodeSocket, SerializeNone):
     )
 
 
-class ScinodeSocketString(ScinodeSocket, SerializeNone):
+class ScinodeSocketString(ScinodeSocket, SerializeJson):
     bl_idname = 'ScinodeSocketString'
     bl_label = "Scinode Socket String"
 
@@ -79,7 +79,7 @@ class ScinodeSocketString(ScinodeSocket, SerializeNone):
     )
 
 
-class ScinodeSocketBool(ScinodeSocket, SerializeNone):
+class ScinodeSocketBool(ScinodeSocket, SerializeJson):
     bl_idname = 'ScinodeSocketBool'
     bl_label = "Scinode Socket Bool"
 

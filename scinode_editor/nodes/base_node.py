@@ -85,6 +85,8 @@ class ScinodeTreeNode():
         This will be called when execute nodetree
         """
         from scinode.version import __version__
+        import json
+        import hashlib
 
         logger.debug(f"save_to_db: {self.name}")
         if not self.daemon_name:
@@ -124,6 +126,12 @@ class ScinodeTreeNode():
                 "description": self.description,
                 "log": self.log,
             }
+            # calculate the hash of metadata
+            hash_metadata = {"executor":executor,
+                            "args": metadata["args"],
+                            "kwargs": metadata["kwargs"],
+            }
+            data["metadata"]["hash"] = hashlib.md5(json.dumps(hash_metadata).encode('utf-8')).hexdigest()
 
         return data
 
@@ -499,8 +507,6 @@ def sockets_as_dbdata(sockets):
                 'to_node': link.to_node.name,
                 'to_socket': link.to_socket.name,
                 'to_socket_uuid': link.to_socket.uuid,
-                'value': None,
-                'index': link.from_node.outputs.find(link.from_socket.name),
             }
             )
         dbdata.append(data)
